@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donate Food - Terra-Nova</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .brand h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #27ae60;
+        }
+
+        /* Main Container */
+        .main-container {
+            margin-top: 100px;
+            padding: 3rem 5%;
+            max-width: 1600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            color: #aaa;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Donation Grid */
+        .donation-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        /* Left Side - Upload Section */
+        .upload-section {
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.8), rgba(30, 30, 30, 0.6));
+            border-radius: 20px;
+            padding: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: #27ae60;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .donor-info-form {
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #ccc;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(10, 10, 10, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #27ae60;
+            background: rgba(10, 10, 10, 0.7);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Image Upload Area */
+        .upload-area {
+            border: 3px dashed rgba(39, 174, 96, 0.3);
+            border-radius: 15px;
+            padding: 3rem;
+            text-align: center;
+            background: rgba(10, 10, 10, 0.3);
+            transition: all 0.3s;
+            cursor: pointer;
+            margin-bottom: 2rem;
+        }
+
+        .upload-area:hover {
+            border-color: #27ae60;
+            background: rgba(39, 174, 96, 0.05);
+        }
+
+        .upload-area.dragover {
+            border-color: #27ae60;
+            background: rgba(39, 174, 96, 0.1);
+            transform: scale(1.02);
+        }
+
+        .upload-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.7;
+        }
+
+        .upload-text {
+            font-size: 1.2rem;
+            color: #aaa;
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-subtext {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        /* Image Preview */
+        .image-preview-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .image-preview {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            aspect-ratio: 1;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .remove-image {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(231, 76, 60, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .remove-image:hover {
+            background: #c0392b;
+            transform: scale(1.1);
+        }
+
+        .analyze-button {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, #27ae60, #229954);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4);
+        }
+
+        .analyze-button:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.6);
+        }
+
+        .analyze-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Right Side - AI Analysis Section */
+        .ai-analysis-section {
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.8), rgba(30, 30, 30, 0.6));
+            border-radius: 20px;
+            padding: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 120px;
+            height: fit-content;
+        }
+
+        .ai-placeholder {
+            background: rgba(10, 10, 10, 0.5);
+            border: 2px dashed rgba(41, 128, 185, 0.3);
+            border-radius: 15px;
+            padding: 3rem;
+            text-align: center;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ai-icon {
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.5;
+        }
+
+        .ai-placeholder h3 {
+            font-size: 1.8rem;
+            color: #2980b9;
+            margin-bottom: 1rem;
+        }
+
+        .ai-placeholder p {
+            color: #888;
+            line-height: 1.8;
+            max-width: 400px;
+        }
+
+        /* AI Results (Hidden by default) */
+        .ai-results {
+            display: none;
+        }
+
+        .ai-results.active {
+            display: block;
+        }
+
+        .result-item {
+            background: rgba(10, 10, 10, 0.5);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #27ae60;
+        }
+
+        .result-item.at-risk {
+            border-left-color: #f39c12;
+        }
+
+        .result-item.spoiled {
+            border-left-color: #e74c3c;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .result-status {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .status-fresh {
+            background: rgba(39, 174, 96, 0.2);
+            color: #27ae60;
+        }
+
+        .status-at-risk {
+            background: rgba(243, 156, 18, 0.2);
+            color: #f39c12;
+        }
+
+        .status-spoiled {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+        }
+
+        .confidence-score {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2980b9;
+        }
+
+        .recommendation {
+            background: rgba(41, 128, 185, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+        }
+
+        .recommendation-title {
+            color: #2980b9;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Progress Steps */
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+            padding: 0 2rem;
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .step::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: -1;
+        }
+
+        .step:first-child::before {
+            display: none;
+        }
+
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .step.active .step-circle {
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            box-shadow: 0 0 20px rgba(39, 174, 96, 0.5);
+        }
+
+        .step-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .step.active .step-label {
+            color: #27ae60;
+            font-weight: 600;
+        }
+
+        /* Submit Section */
+        .submit-section {
+            background: linear-gradient(135deg, rgba(39, 174, 96, 0.1), rgba(41, 128, 185, 0.1));
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            border: 1px solid rgba(39, 174, 96, 0.3);
+        }
+
+        .submit-section h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #27ae60;
+        }
+
+        .impact-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .stat-item {
+            padding: 1.5rem;
+            background: rgba(10, 10, 10, 0.5);
+            border-radius: 15px;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: #aaa;
+            margin-top: 0.5rem;
+        }
+
+        .final-submit-button {
+            padding: 1.5rem 4rem;
+            background: linear-gradient(135deg, #27ae60, #229954);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 1.3rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 20px rgba(39, 174, 96, 0.4);
+        }
+
+        .final-submit-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 30px rgba(39, 174, 96, 0.6);
+        }
+
+        @media (max-width: 1024px) {
+            .donation-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ai-analysis-section {
+                position: static;
+            }
+
+            .impact-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                display: none;
+            }
+
+            .page-header h2 {
+                font-size: 2rem;
+            }
+
+            .progress-steps {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .step::before {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo">🌍</div>
+                <div class="brand">
+                    <h1>Terra-Nova</h1>
+                </div>
+            </div>
+            <nav>
+                <a href="home_page.html">Home</a>
+                <a href="donation.html">Donate</a>
+                <a href="#dashboard">Dashboard</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h2>Donate Food & Make an Impact</h2>
+            <p>Upload images of your food items, and our AI will analyze freshness and guide you on the best donation path.</p>
+        </div>
+
+        <!-- Progress Steps -->
+        <div class="progress-steps">
+            <div class="step active">
+                <div class="step-circle">1</div>
+                <div class="step-label">Donor Info</div>
+            </div>
+            <div class="step">
+                <div class="step-circle">2</div>
+                <div class="step-label">Upload Images</div>
+            </div>
+            <div class="step">
+                <div class="step-circle">3</div>
+                <div class="step-label">AI Analysis</div>
+            </div>
+            <div class="step">
+                <div class="step-circle">4</div>
+                <div class="step-label">Submit</div>
+            </div>
+        </div>
+
+        <!-- Donation Grid -->
+        <div class="donation-grid">
+            <!-- Left Side - Upload Section -->
+            <div class="upload-section">
+                <h3 class="section-title">📝 Donation Details</h3>
+                
+                <!-- Donor Information Form -->
+                <div class="donor-info-form">
+                    <div class="form-group">
+                        <label for="donorName">Your Name / Organization</label>
+                        <input type="text" id="donorName" placeholder="Enter your name or organization" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="donorType">Donor Type</label>
+                        <select id="donorType" required>
+                            <option value="">Select type</option>
+                            <option value="individual">Individual/Household</option>
+                            <option value="restaurant">Restaurant</option>
+                            <option value="grocery">Grocery Store</option>
+                            <option value="business">Business/Company</option>
+                            <option value="farm">Farm/Producer</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <input type="text" id="location" placeholder="City, Address" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactInfo">Contact Information</label>
+                        <input type="text" id="contactInfo" placeholder="Phone or Email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="foodDescription">Food Description (Optional)</label>
+                        <textarea id="foodDescription" placeholder="Brief description of the food items you're donating..."></textarea>
+                    </div>
+                </div>
+
+                <h3 class="section-title">📸 Upload Food Images</h3>
+
+                <!-- Image Upload Area -->
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📤</div>
+                    <div class="upload-text">Click to upload or drag and drop</div>
+                    <div class="upload-subtext">Support: JPG, PNG, WEBP (Max 5MB per image)</div>
+                    <input type="file" id="fileInput" accept="image/*" multiple>
+                </div>
+
+                <!-- Image Preview Container -->
+                <div class="image-preview-container" id="imagePreviewContainer"></div>
+
+                <!-- Analyze Button -->
+                <button class="analyze-button" id="analyzeButton" disabled>
+                    🤖 Analyze Food Quality with AI
+                </button>
+            </div>
+
+            <!-- Right Side - AI Analysis Section -->
+            <div class="ai-analysis-section">
+                <h3 class="section-title">🤖 AI Quality Analysis</h3>
+                
+                <!-- AI Placeholder (Initial State) -->
+                <div class="ai-placeholder" id="aiPlaceholder">
+                    <div class="ai-icon">🧠</div>
+                    <h3>AI Model Integration Point</h3>
+                    <p>This section will display real-time AI analysis results including food freshness classification, confidence scores, and donation recommendations.</p>
+                </div>
+
+                <!-- AI Results Container (Hidden initially) -->
+                <div class="ai-results" id="aiResults">
+                    <!-- Results will be dynamically inserted here by your AI model -->
+                    <!-- Example structure for reference: -->
+                    <!--
+                    <div class="result-item">
+                        <div class="result-header">
+                            <span class="result-status status-fresh">✓ Fresh</span>
+                            <span class="confidence-score">95%</span>
+                        </div>
+                        <p><strong>Item:</strong> Fresh Vegetables</p>
+                        <div class="recommendation">
+                            <div class="recommendation-title">Recommendation:</div>
+                            <p>This food is safe for immediate donation to local food banks and shelters.</p>
+                        </div>
+                    </div>
+                    -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit Section -->
+        <div class="submit-section" id="submitSection" style="display: none;">
+            <h3>🎉 Ready to Make an Impact!</h3>
+            <p style="color: #aaa; margin-bottom: 2rem;">Your donation will help reduce food waste and support your community.</p>
+            
+            <div class="impact-stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="freshCount">0</div>
+                    <div class="stat-label">Fresh Items</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="atRiskCount">0</div>
+                    <div class="stat-label">At-Risk Items</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="compostCount">0</div>
+                    <div class="stat-label">For Composting</div>
+                </div>
+            </div>
+
+            <button class="final-submit-button" id="finalSubmitButton">
+                Submit Donation 🚀
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // File upload handling
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+        const analyzeButton = document.getElementById('analyzeButton');
+        const aiPlaceholder = document.getElementById('aiPlaceholder');
+        const aiResults = document.getElementById('aiResults');
+        const submitSection = document.getElementById('submitSection');
+
+        let uploadedImages = [];
+
+        // Click to upload
+        uploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        // Drag and drop
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            handleFiles(e.dataTransfer.files);
+        });
+
+        // File input change
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+
+        // Handle uploaded files
+        function handleFiles(files) {
+            Array.from(files).forEach(file => {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        uploadedImages.push({
+                            file: file,
+                            dataUrl: e.target.result
+                        });
+                        displayImagePreview(e.target.result, uploadedImages.length - 1);
+                        updateAnalyzeButton();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        // Display image preview
+        function displayImagePreview(dataUrl, index) {
+            const previewDiv = document.createElement('div');
+            previewDiv.className = 'image-preview';
+            previewDiv.innerHTML = `
+                <img src="${dataUrl}" alt="Food image">
+                <button class="remove-image" onclick="removeImage(${index})">×</button>
+            `;
+            imagePreviewContainer.appendChild(previewDiv);
+        }
+
+        // Remove image
+        window.removeImage = function(index) {
+            uploadedImages.splice(index, 1);
+            imagePreviewContainer.innerHTML = '';
+            uploadedImages.forEach((img, i) => {
+                displayImagePreview(img.dataUrl, i);
+            });
+            updateAnalyzeButton();
+        };
+
+        // Update analyze button state
+        function updateAnalyzeButton() {
+            analyzeButton.disabled = uploadedImages.length === 0;
+        }
+
+        // Analyze button click - This is where your AI model will be integrated
+        analyzeButton.addEventListener('click', () => {
+            // Show loading state
+            analyzeButton.textContent = '🔄 Analyzing...';
+            analyzeButton.disabled = true;
+
+            // TODO: Integrate your AI model here
+            // Example: Call your AI API with uploadedImages
+            // const results = await analyzeWithAI(uploadedImages);
+
+            // Simulate AI processing (remove this when integrating real AI)
+            setTimeout(() => {
+                // Hide placeholder, show results section
+                aiPlaceholder.style.display = 'none';
+                aiResults.classList.add('active');
+                
+                // Display sample results (replace with actual AI results)
+                displaySampleResults();
+                
+                // Show submit section
+                submitSection.style.display = 'block';
+                
+                // Update button
+                analyzeButton.textContent = '✓ Analysis Complete';
+                analyzeButton.style.background = 'linear-gradient(135deg, #27ae60, #229954)';
+                
+                // Update progress steps
+                document.querySelectorAll('.step')[2].classList.add('active');
+            }, 2000);
+        });
+
+        // Display sample results (Replace this with your actual AI results)
+        function displaySampleResults() {
+            aiResults.innerHTML = `
+                <div class="result-item">
+                    <div class="result-header">
+                        <span class="result-status status-fresh">✓ Fresh</span>
+                        <span class="confidence-score">92%</span>
+                    </div>
+                    <p><strong>Classification:</strong> Ready for donation</p>
+                    <div class="recommendation">
+                        <div class="recommendation-title">📍 Recommendation:</div>
+                        <p>This food is safe for immediate donation to local food banks and community centers.</p>
+                    </div>
+                </div>
+            `;
+
+            // Update stats
+            document.getElementById('freshCount').textContent = uploadedImages.length;
+        }
+
+        // Final submit
+        document.getElementById('finalSubmitButton').addEventListener('click', () => {
+            // TODO: Implement final submission logic
+            alert('Thank you for your donation! Your contribution will help reduce food waste and support the community. 🌍💚');
+            
+            // Update progress
+            document.querySelectorAll('.step')[3].classList.add('active');
+        });
+
+        // Update progress steps based on form completion
+        document.getElementById('donorName').addEventListener('input', updateProgressSteps);
+        document.getElementById('donorType').addEventListener('change', updateProgressSteps);
+
+        function updateProgressSteps() {
+            const name = document.getElementById('donorName').value;
+            const type = document.getElementById('donorType').value;
+            
+            if (name && type) {
+                document.querySelectorAll('.step')[1].classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
