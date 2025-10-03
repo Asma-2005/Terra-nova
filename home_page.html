@@ -1,706 +1,907 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Terra-Nova - Smarter Cities, Sustainable Food Systems</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #0a0a0a;
-            color: #ffffff;
-            overflow-x: hidden;
-        }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #0a0a0a;
+        color: #ffffff;
+        overflow-x: hidden;
+      }
 
-        /* Header */
-        header {
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1.5rem 5%;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
+      /* Header */
+      header {
+        background: rgba(10, 10, 10, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 1.5rem 5%;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
 
-        .header-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+      .header-content {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
 
-        .logo-section {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
+      .logo-section {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
 
-        .logo {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #27ae60, #2980b9);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
+      .logo {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #27ae60, #2980b9);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
 
-        .brand {
-            display: flex;
-            flex-direction: column;
-        }
+      .brand {
+        display: flex;
+        flex-direction: column;
+      }
 
-        .brand h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #27ae60, #2980b9);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+      .brand h1 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #27ae60, #2980b9);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
 
-        .tagline {
-            font-size: 0.9rem;
-            color: #888;
-        }
+      .tagline {
+        font-size: 0.9rem;
+        color: #888;
+      }
 
+      nav {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+      }
+
+      nav a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s;
+        position: relative;
+      }
+
+      nav a:hover {
+        color: #27ae60;
+      }
+
+      nav a::after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: #27ae60;
+        transition: width 0.3s;
+      }
+
+      nav a:hover::after {
+        width: 100%;
+      }
+
+      .btn-login {
+        background: linear-gradient(135deg, #27ae60, #229954);
+        padding: 0.5rem 1.5rem;
+        border-radius: 25px;
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s;
+      }
+
+      .btn-login:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4);
+      }
+
+      .user-menu {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .user-avatar {
+        width: 32px;
+        height: 32px;
+        background: linear-gradient(135deg, #27ae60, #2980b9);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        font-weight: bold;
+      }
+
+      .logout-btn {
+        padding: 0.5rem 1.2rem;
+        background: rgba(231, 76, 60, 0.2);
+        border: 1px solid rgba(231, 76, 60, 0.3);
+        border-radius: 20px;
+        color: #e74c3c;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-size: 0.9rem;
+        border: none;
+      }
+
+      .logout-btn:hover {
+        background: rgba(231, 76, 60, 0.3);
+      }
+
+      /* Hero Section */
+      .hero {
+        margin-top: 100px;
+        height: 600px;
+        background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)),
+          url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(39,174,96,0.1)" stroke-width="1"/></pattern></defs><rect width="1200" height="600" fill="%23111"/><rect width="1200" height="600" fill="url(%23grid)"/><circle cx="200" cy="150" r="80" fill="rgba(41,128,185,0.3)"/><circle cx="800" cy="400" r="100" fill="rgba(39,174,96,0.3)"/><circle cx="1000" cy="200" r="60" fill="rgba(41,128,185,0.2)"/></svg>');
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+
+      .hero-content {
+        text-align: center;
+        max-width: 900px;
+        padding: 2rem;
+        animation: fadeInUp 1s ease-out;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .hero h2 {
+        font-size: 3.5rem;
+        margin-bottom: 1.5rem;
+        line-height: 1.2;
+        background: linear-gradient(135deg, #fff, #27ae60);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .cta-buttons {
+        display: flex;
+        gap: 1.5rem;
+        justify-content: center;
+        margin-top: 2rem;
+      }
+
+      .btn {
+        padding: 1rem 2.5rem;
+        border: none;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-decoration: none;
+        display: inline-block;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #27ae60, #229954);
+        color: white;
+        box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(39, 174, 96, 0.6);
+      }
+
+      .btn-secondary {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
+      }
+
+      .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: #2980b9;
+      }
+
+      /* User Roles Section */
+      .user-roles {
+        padding: 5rem 5%;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .roles-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+        gap: 3rem;
+        margin-top: 3rem;
+      }
+
+      .role-card {
+        background: linear-gradient(
+          135deg,
+          rgba(20, 20, 20, 0.8),
+          rgba(30, 30, 30, 0.6)
+        );
+        border-radius: 20px;
+        padding: 3rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .role-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: linear-gradient(90deg, #27ae60, #2980b9);
+        transform: scaleX(0);
+        transition: transform 0.3s;
+      }
+
+      .role-card:hover {
+        transform: translateY(-10px);
+        border-color: rgba(39, 174, 96, 0.5);
+        box-shadow: 0 10px 40px rgba(39, 174, 96, 0.2);
+      }
+
+      .role-card:hover::before {
+        transform: scaleX(1);
+      }
+
+      .role-icons {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        font-size: 2rem;
+      }
+
+      .role-card h3 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        color: #27ae60;
+      }
+
+      .role-card p {
+        color: #ccc;
+        line-height: 1.8;
+        margin-bottom: 2rem;
+      }
+
+      /* How It Works */
+      .how-it-works {
+        padding: 5rem 5%;
+        background: linear-gradient(180deg, #0a0a0a, #111);
+      }
+
+      .section-title {
+        text-align: center;
+        font-size: 2.5rem;
+        margin-bottom: 3rem;
+        background: linear-gradient(135deg, #fff, #27ae60);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .step {
+        text-align: center;
+        padding: 2rem;
+        background: rgba(20, 20, 20, 0.5);
+        border-radius: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        transition: all 0.3s;
+      }
+
+      .step:hover {
+        background: rgba(30, 30, 30, 0.7);
+        border-color: rgba(39, 174, 96, 0.3);
+      }
+
+      .step-icon {
+        font-size: 3rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .step-number {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #27ae60, #2980b9);
+        border-radius: 50%;
+        line-height: 40px;
+        margin-bottom: 1rem;
+        font-weight: bold;
+      }
+
+      .step h4 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        color: #27ae60;
+      }
+
+      .step p {
+        color: #aaa;
+        line-height: 1.6;
+      }
+
+      /* Value Proposition */
+      .value-proposition {
+        padding: 5rem 5%;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .value-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2.5rem;
+        margin-top: 3rem;
+      }
+
+      .value-item {
+        text-align: center;
+        padding: 2.5rem;
+        background: rgba(20, 20, 20, 0.5);
+        border-radius: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s;
+      }
+
+      .value-item:hover {
+        transform: translateY(-5px);
+        background: rgba(30, 30, 30, 0.7);
+        border-color: rgba(39, 174, 96, 0.4);
+      }
+
+      .value-icon {
+        font-size: 3.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .value-item h4 {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        color: #2980b9;
+      }
+
+      /* NASA Data Section */
+      .nasa-data {
+        padding: 5rem 5%;
+        background: linear-gradient(180deg, #0a0a0a, #0d1f1a);
+      }
+
+      .map-container {
+        max-width: 1200px;
+        margin: 3rem auto;
+        height: 500px;
+        background: rgba(20, 20, 20, 0.8);
+        border-radius: 20px;
+        border: 1px solid rgba(39, 174, 96, 0.3);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .map-placeholder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        background: linear-gradient(
+          135deg,
+          rgba(20, 20, 20, 0.9),
+          rgba(10, 30, 20, 0.9)
+        );
+      }
+
+      .map-legend {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        background: rgba(0, 0, 0, 0.8);
+        padding: 1.5rem;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        margin-bottom: 0.8rem;
+      }
+
+      .legend-color {
+        width: 20px;
+        height: 20px;
+        border-radius: 4px;
+      }
+
+      .data-badge {
+        text-align: center;
+        margin-top: 2rem;
+        padding: 1rem;
+        background: rgba(41, 128, 185, 0.1);
+        border-radius: 10px;
+        border: 1px solid rgba(41, 128, 185, 0.3);
+        color: #2980b9;
+        font-weight: 600;
+      }
+
+      /* Footer CTA */
+      .footer-cta {
+        padding: 5rem 5%;
+        background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
+        text-align: center;
+      }
+
+      .footer-cta h2 {
+        font-size: 3rem;
+        margin-bottom: 2rem;
+        background: linear-gradient(135deg, #27ae60, #2980b9);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      footer {
+        background: #0a0a0a;
+        padding: 3rem 5%;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .footer-content {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+      }
+
+      .footer-section h4 {
+        color: #27ae60;
+        margin-bottom: 1rem;
+      }
+
+      .footer-section a {
+        color: #888;
+        text-decoration: none;
+        display: block;
+        margin-bottom: 0.5rem;
+        transition: color 0.3s;
+      }
+
+      .footer-section a:hover {
+        color: #27ae60;
+      }
+
+      .social-icons {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      .social-icon {
+        width: 40px;
+        height: 40px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s;
+      }
+
+      .social-icon:hover {
+        background: #27ae60;
+        transform: translateY(-3px);
+      }
+
+      .nasa-badge {
+        margin-top: 2rem;
+        padding: 1rem;
+        background: rgba(41, 128, 185, 0.1);
+        border-radius: 10px;
+        border: 1px solid rgba(41, 128, 185, 0.3);
+        text-align: center;
+      }
+
+      @media (max-width: 768px) {
         nav {
-            display: flex;
-            gap: 2rem;
-        }
-
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-            position: relative;
-        }
-
-        nav a:hover {
-            color: #27ae60;
-        }
-
-        nav a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: #27ae60;
-            transition: width 0.3s;
-        }
-
-        nav a:hover::after {
-            width: 100%;
-        }
-
-        /* Hero Section */
-        .hero {
-            margin-top: 100px;
-            height: 600px;
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), 
-                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(39,174,96,0.1)" stroke-width="1"/></pattern></defs><rect width="1200" height="600" fill="%23111"/><rect width="1200" height="600" fill="url(%23grid)"/><circle cx="200" cy="150" r="80" fill="rgba(41,128,185,0.3)"/><circle cx="800" cy="400" r="100" fill="rgba(39,174,96,0.3)"/><circle cx="1000" cy="200" r="60" fill="rgba(41,128,185,0.2)"/></svg>');
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .hero-content {
-            text-align: center;
-            max-width: 900px;
-            padding: 2rem;
-            animation: fadeInUp 1s ease-out;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+          display: none;
         }
 
         .hero h2 {
-            font-size: 3.5rem;
-            margin-bottom: 1.5rem;
-            line-height: 1.2;
-            background: linear-gradient(135deg, #fff, #27ae60);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            margin-top: 2rem;
-        }
-
-        .btn {
-            padding: 1rem 2.5rem;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #27ae60, #229954);
-            color: white;
-            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.6);
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(10px);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: #2980b9;
-        }
-
-        /* User Roles Section */
-        .user-roles {
-            padding: 5rem 5%;
-            max-width: 1400px;
-            margin: 0 auto;
+          font-size: 2rem;
         }
 
         .roles-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-            gap: 3rem;
-            margin-top: 3rem;
+          grid-template-columns: 1fr;
         }
 
-        .role-card {
-            background: linear-gradient(135deg, rgba(20, 20, 20, 0.8), rgba(30, 30, 30, 0.6));
-            border-radius: 20px;
-            padding: 3rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
+        .cta-buttons {
+          flex-direction: column;
         }
-
-        .role-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, #27ae60, #2980b9);
-            transform: scaleX(0);
-            transition: transform 0.3s;
-        }
-
-        .role-card:hover {
-            transform: translateY(-10px);
-            border-color: rgba(39, 174, 96, 0.5);
-            box-shadow: 0 10px 40px rgba(39, 174, 96, 0.2);
-        }
-
-        .role-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .role-icons {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            font-size: 2rem;
-        }
-
-        .role-card h3 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            color: #27ae60;
-        }
-
-        .role-card p {
-            color: #ccc;
-            line-height: 1.8;
-            margin-bottom: 2rem;
-        }
-
-        /* How It Works */
-        .how-it-works {
-            padding: 5rem 5%;
-            background: linear-gradient(180deg, #0a0a0a, #111);
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            background: linear-gradient(135deg, #fff, #27ae60);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .steps {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .step {
-            text-align: center;
-            padding: 2rem;
-            background: rgba(20, 20, 20, 0.5);
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s;
-        }
-
-        .step:hover {
-            background: rgba(30, 30, 30, 0.7);
-            border-color: rgba(39, 174, 96, 0.3);
-        }
-
-        .step-icon {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .step-number {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #27ae60, #2980b9);
-            border-radius: 50%;
-            line-height: 40px;
-            margin-bottom: 1rem;
-            font-weight: bold;
-        }
-
-        .step h4 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #27ae60;
-        }
-
-        .step p {
-            color: #aaa;
-            line-height: 1.6;
-        }
-
-        /* Value Proposition */
-        .value-proposition {
-            padding: 5rem 5%;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .value-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2.5rem;
-            margin-top: 3rem;
-        }
-
-        .value-item {
-            text-align: center;
-            padding: 2.5rem;
-            background: rgba(20, 20, 20, 0.5);
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s;
-        }
-
-        .value-item:hover {
-            transform: translateY(-5px);
-            background: rgba(30, 30, 30, 0.7);
-            border-color: rgba(39, 174, 96, 0.4);
-        }
-
-        .value-icon {
-            font-size: 3.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .value-item h4 {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            color: #2980b9;
-        }
-
-        /* NASA Data Section */
-        .nasa-data {
-            padding: 5rem 5%;
-            background: linear-gradient(180deg, #0a0a0a, #0d1f1a);
-        }
-
-        .map-container {
-            max-width: 1200px;
-            margin: 3rem auto;
-            height: 500px;
-            background: rgba(20, 20, 20, 0.8);
-            border-radius: 20px;
-            border: 1px solid rgba(39, 174, 96, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .map-placeholder {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            background: linear-gradient(135deg, rgba(20, 20, 20, 0.9), rgba(10, 30, 20, 0.9));
-        }
-
-        .map-legend {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 1.5rem;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            margin-bottom: 0.8rem;
-        }
-
-        .legend-color {
-            width: 20px;
-            height: 20px;
-            border-radius: 4px;
-        }
-
-        .data-badge {
-            text-align: center;
-            margin-top: 2rem;
-            padding: 1rem;
-            background: rgba(41, 128, 185, 0.1);
-            border-radius: 10px;
-            border: 1px solid rgba(41, 128, 185, 0.3);
-            color: #2980b9;
-            font-weight: 600;
-        }
-
-        /* Footer CTA */
-        .footer-cta {
-            padding: 5rem 5%;
-            background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
-            text-align: center;
-        }
-
-        .footer-cta h2 {
-            font-size: 3rem;
-            margin-bottom: 2rem;
-            background: linear-gradient(135deg, #27ae60, #2980b9);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        footer {
-            background: #0a0a0a;
-            padding: 3rem 5%;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .footer-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-
-        .footer-section h4 {
-            color: #27ae60;
-            margin-bottom: 1rem;
-        }
-
-        .footer-section a {
-            color: #888;
-            text-decoration: none;
-            display: block;
-            margin-bottom: 0.5rem;
-            transition: color 0.3s;
-        }
-
-        .footer-section a:hover {
-            color: #27ae60;
-        }
-
-        .social-icons {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .social-icon {
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-        }
-
-        .social-icon:hover {
-            background: #27ae60;
-            transform: translateY(-3px);
-        }
-
-        .nasa-badge {
-            margin-top: 2rem;
-            padding: 1rem;
-            background: rgba(41, 128, 185, 0.1);
-            border-radius: 10px;
-            border: 1px solid rgba(41, 128, 185, 0.3);
-            text-align: center;
-        }
-
-        @media (max-width: 768px) {
-            nav {
-                display: none;
-            }
-
-            .hero h2 {
-                font-size: 2rem;
-            }
-
-            .roles-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .cta-buttons {
-                flex-direction: column;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Header -->
     <header>
-        <div class="header-content">
-            <div class="logo-section">
-                <div class="logo">🌍</div>
-                <div class="brand">
-                    <h1>Terra-Nova</h1>
-                    <span class="tagline">Smarter Cities, Sustainable Food Systems</span>
-                </div>
-            </div>
-            <nav>
-                <a href="home_page.html">Home</a>
-                <a href="#how-it-works">How It Works</a>
-                <a href="donation.html">Donate</a>
-                <a href="#dashboard">Dashboard</a>
-                <a href="#about">About</a>
-                <a href="#contact">Contact</a>
-            </nav>
+      <div class="header-content">
+        <div class="logo-section">
+          <div class="logo">🌍</div>
+          <div class="brand">
+            <h1>Terra-Nova</h1>
+            <span class="tagline">Smarter Cities, Sustainable Food Systems</span>
+          </div>
         </div>
+        <nav id="mainNav">
+          <!-- Navigation will be dynamically populated -->
+        </nav>
+        <div class="user-menu" id="userMenu" style="display: none;">
+          <div class="user-info">
+            <div class="user-avatar" id="userAvatar">U</div>
+            <span id="userName">User</span>
+          </div>
+          <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+      </div>
     </header>
 
     <!-- Hero Section -->
     <section class="hero" id="home">
-        <div class="hero-content">
-            <h2>Transforming food waste into food security with AI + NASA Data</h2>
-            <div class="cta-buttons">
-                <a href="#donate" class="btn btn-primary">Donate Food</a>
-                <a href="#dashboard" class="btn btn-secondary">Planner Dashboard</a>
-            </div>
+      <div class="hero-content">
+        <h2>Transforming food waste into food security with AI + NASA Data</h2>
+        <div class="cta-buttons" id="ctaButtons">
+          <!-- Buttons will be dynamically populated -->
         </div>
+      </div>
     </section>
 
     <!-- User Roles -->
     <section class="user-roles" id="donate">
-        <h2 class="section-title">Join the Movement</h2>
-        <div class="roles-grid">
-            <!-- Donor Card -->
-            <div class="role-card">
-                <div class="role-icons">
-                    <span>🍽️</span>
-                    <span>🏠</span>
-                    <span>🏢</span>
-                </div>
-                <h3>Food Donors</h3>
-                <p>Upload food images and let our AI check quality instantly. Fresh food connects with recipients, while at-risk items are redirected to composting systems. Make every meal count and reduce waste in your community.</p>
-                <a href="donation.html" class="btn btn-primary">Start Donating</a>
-            </div>
-
-            <!-- Planner Card -->
-            <div class="role-card">
-                <div class="role-icons">
-                    <span>🏙️</span>
-                    <span>📊</span>
-                    <span>🛰️</span>
-                </div>
-                <h3>Urban Planners</h3>
-                <p>Access real-time dashboard powered by NASA satellite data including HLS, SEDAC, and NDVI. Visualize food waste hotspots, plan optimal composting sites, and monitor urban green spaces for sustainable city development.</p>
-                <a href="#dashboard" class="btn btn-primary">View Dashboard</a>
-            </div>
+      <h2 class="section-title">Join the Movement</h2>
+      <div class="roles-grid">
+        <!-- Donor Card -->
+        <div class="role-card">
+          <div class="role-icons">
+            <span>🍽️</span>
+            <span>🏠</span>
+            <span>🏢</span>
+          </div>
+          <h3>Food Donors</h3>
+          <p>
+            Upload food images and let our AI check quality instantly. Fresh
+            food connects with recipients, while at-risk items are redirected to
+            composting systems. Make every meal count and reduce waste in your
+            community.
+          </p>
+          <a href="donation.html" class="btn btn-primary">Start Donating</a>
         </div>
+
+        <!-- Planner Card -->
+        <div class="role-card">
+          <div class="role-icons">
+            <span>🏙️</span>
+            <span>📊</span>
+            <span>🛰️</span>
+          </div>
+          <h3>Urban Planners</h3>
+          <p>
+            Access real-time dashboard powered by NASA satellite data including
+            HLS, SEDAC, and NDVI. Visualize food waste hotspots, plan optimal
+            composting sites, and monitor urban green spaces for sustainable
+            city development.
+          </p>
+          <a href="dashboard.html" class="btn btn-primary">View Dashboard</a>
+        </div>
+      </div>
     </section>
 
     <!-- How It Works -->
     <section class="how-it-works" id="how-it-works">
-        <h2 class="section-title">How It Works</h2>
-        <div class="steps">
-            <div class="step">
-                <div class="step-number">1</div>
-                <div class="step-icon">🤖</div>
-                <h4>AI Food Rescue</h4>
-                <p>Our advanced AI analyzes food images and classifies them as Fresh, At-Risk, or Spoiled, ensuring safe and efficient food redistribution.</p>
-            </div>
-            <div class="step">
-                <div class="step-number">2</div>
-                <div class="step-icon">♻️</div>
-                <h4>Waste-to-Resource</h4>
-                <p>Spoiled food is automatically routed to composting facilities or urban gardens, creating nutrient-rich soil for sustainable agriculture.</p>
-            </div>
-            <div class="step">
-                <div class="step-number">3</div>
-                <div class="step-icon">📈</div>
-                <h4>Urban Planning Dashboard</h4>
-                <p>Planners leverage NASA Earth observation data to make informed decisions about food systems, green infrastructure, and resource allocation.</p>
-            </div>
+      <h2 class="section-title">How It Works</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-icon">🤖</div>
+          <h4>AI Food Rescue</h4>
+          <p>
+            Our advanced AI analyzes food images and classifies them as Fresh,
+            At-Risk, or Spoiled, ensuring safe and efficient food
+            redistribution.
+          </p>
         </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-icon">♻️</div>
+          <h4>Waste-to-Resource</h4>
+          <p>
+            Spoiled food is automatically routed to composting facilities or
+            urban gardens, creating nutrient-rich soil for sustainable
+            agriculture.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-icon">📈</div>
+          <h4>Urban Planning Dashboard</h4>
+          <p>
+            Planners leverage NASA Earth observation data to make informed
+            decisions about food systems, green infrastructure, and resource
+            allocation.
+          </p>
+        </div>
+      </div>
     </section>
 
     <!-- Value Proposition -->
     <section class="value-proposition">
-        <h2 class="section-title">Impact Across Communities</h2>
-        <div class="value-grid">
-            <div class="value-item">
-                <div class="value-icon">🌱</div>
-                <h4>Communities</h4>
-                <p>Access to safe, nutritious food and expanded green spaces. Reduced hunger and improved quality of life through data-driven resource distribution.</p>
-            </div>
-            <div class="value-item">
-                <div class="value-icon">💼</div>
-                <h4>Donors</h4>
-                <p>Minimize waste, unlock tax benefits, and enhance public image. Transform surplus food into positive social impact with full transparency.</p>
-            </div>
-            <div class="value-item">
-                <div class="value-icon">🏙️</div>
-                <h4>Planners</h4>
-                <p>Data-driven insights for sustainable urban growth. Optimize resource allocation, reduce environmental impact, and build resilient food systems.</p>
-            </div>
+      <h2 class="section-title">Impact Across Communities</h2>
+      <div class="value-grid">
+        <div class="value-item">
+          <div class="value-icon">🌱</div>
+          <h4>Communities</h4>
+          <p>
+            Access to safe, nutritious food and expanded green spaces. Reduced
+            hunger and improved quality of life through data-driven resource
+            distribution.
+          </p>
         </div>
+        <div class="value-item">
+          <div class="value-icon">💼</div>
+          <h4>Donors</h4>
+          <p>
+            Minimize waste, unlock tax benefits, and enhance public image.
+            Transform surplus food into positive social impact with full
+            transparency.
+          </p>
+        </div>
+        <div class="value-item">
+          <div class="value-icon">🏙️</div>
+          <h4>Planners</h4>
+          <p>
+            Data-driven insights for sustainable urban growth. Optimize resource
+            allocation, reduce environmental impact, and build resilient food
+            systems.
+          </p>
+        </div>
+      </div>
     </section>
 
     <!-- NASA Data Integration -->
     <section class="nasa-data">
-        <h2 class="section-title">Powered by NASA Earth Observation</h2>
-        <div class="map-container">
-            <div class="map-placeholder">
-                <h3 style="color: #27ae60; margin-bottom: 1rem;">🛰️ Real-Time Data Visualization</h3>
-                <p style="color: #aaa; max-width: 600px; text-align: center;">Interactive map showing food surplus hotspots, composting zones, and food insecurity areas across your city.</p>
-            </div>
-            <div class="map-legend">
-                <div class="legend-item">
-                    <div class="legend-color" style="background: #e74c3c;"></div>
-                    <span>Food Surplus Hotspots</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: #27ae60;"></div>
-                    <span>Composting Zones</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: #f39c12;"></div>
-                    <span>Food Insecurity Areas</span>
-                </div>
-            </div>
+      <h2 class="section-title">Powered by NASA Earth Observation</h2>
+      <div class="map-container">
+        <div class="map-placeholder">
+          <h3 style="color: #27ae60; margin-bottom: 1rem">
+            🛰️ Real-Time Data Visualization
+          </h3>
+          <p style="color: #aaa; max-width: 600px; text-align: center">
+            Interactive map showing food surplus hotspots, composting zones, and
+            food insecurity areas across your city.
+          </p>
         </div>
-        <div class="data-badge">
-            🛰️ Powered by NASA HLS, NDVI, and SEDAC Datasets
+        <div class="map-legend">
+          <div class="legend-item">
+            <div class="legend-color" style="background: #e74c3c"></div>
+            <span>Food Surplus Hotspots</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background: #27ae60"></div>
+            <span>Composting Zones</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background: #f39c12"></div>
+            <span>Food Insecurity Areas</span>
+          </div>
         </div>
+      </div>
+      <div class="data-badge">
+        🛰️ Powered by NASA HLS, NDVI, and SEDAC Datasets
+      </div>
     </section>
 
     <!-- Footer CTA -->
     <section class="footer-cta">
-        <h2>Join Terra-Nova Today</h2>
-        <div class="cta-buttons">
-            <a href="donation.html" class="btn btn-primary">Donate Now</a>
-            <a href="#" class="btn btn-secondary">Explore Dashboard</a>
-        </div>
+      <h2>Join Terra-Nova Today</h2>
+      <div class="cta-buttons" id="footerCtaButtons">
+        <!-- Buttons will be dynamically populated -->
+      </div>
     </section>
 
     <!-- Footer -->
     <footer id="contact">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>Terra-Nova</h4>
-                <p style="color: #888;">Building sustainable food systems through innovation and collaboration.</p>
-                <div class="social-icons">
-                    <div class="social-icon">📘</div>
-                    <div class="social-icon">🐦</div>
-                    <div class="social-icon">📷</div>
-                    <div class="social-icon">💼</div>
-                </div>
-            </div>
-            <div class="footer-section">
-                <h4>Quick Links</h4>
-                <a href="#home">Home</a>
-                <a href="#how-it-works">How It Works</a>
-                <a href="#donate">Donate Food</a>
-                <a href="#dashboard">Dashboard</a>
-            </div>
-            <div class="footer-section">
-                <h4>Resources</h4>
-                <a href="#">Documentation</a>
-                <a href="#">API Access</a>
-                <a href="#">Support</a>
-                <a href="#">Privacy Policy</a>
-            </div>
-            <div class="footer-section">
-                <h4>Contact</h4>
-                <a href="mailto:info@terra-nova.org">info@terra-nova.org</a>
-                <div class="nasa-badge">
-                    <strong>🚀 NASA Space Apps Challenge 2025</strong>
-                </div>
-            </div>
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>Terra-Nova</h4>
+          <p style="color: #888">
+            Building sustainable food systems through innovation and
+            collaboration.
+          </p>
+          <div class="social-icons">
+            <div class="social-icon">📘</div>
+            <div class="social-icon">🐦</div>
+            <div class="social-icon">📷</div>
+            <div class="social-icon">💼</div>
+          </div>
         </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <a href="#home">Home</a>
+          <a href="#how-it-works">How It Works</a>
+          <a href="#donate">Donate Food</a>
+          <a href="#dashboard">Dashboard</a>
+        </div>
+        <div class="footer-section">
+          <h4>Resources</h4>
+          <a href="#">Documentation</a>
+          <a href="#">API Access</a>
+          <a href="#">Support</a>
+          <a href="#">Privacy Policy</a>
+        </div>
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <a href="mailto:info@terra-nova.org">info@terra-nova.org</a>
+          <div class="nasa-badge">
+            <strong>🚀 NASA Space Apps Challenge 2025</strong>
+          </div>
+        </div>
+      </div>
     </footer>
-</body>
+
+    <script>
+      // Authentication and navigation management
+      function checkAuth() {
+        const currentUser = localStorage.getItem('terranovaCurrentUser');
+        if (!currentUser) {
+          // Not logged in - show login/signup buttons
+          document.getElementById('userMenu').style.display = 'none';
+          document.getElementById('mainNav').innerHTML = `
+            <a href="home_page.html">Home</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+            <a href="login.html" class="btn-login">Login</a>
+          `;
+          document.getElementById('ctaButtons').innerHTML = `
+            <a href="login.html?redirect=donation" class="btn btn-primary">Donate Food</a>
+            <a href="login.html?redirect=dashboard" class="btn btn-secondary">Planner Dashboard</a>
+          `;
+          document.getElementById('footerCtaButtons').innerHTML = `
+            <a href="login.html?redirect=donation" class="btn btn-primary">Donate Now</a>
+            <a href="login.html?redirect=dashboard" class="btn btn-secondary">Explore Dashboard</a>
+          `;
+          return null;
+        }
+        
+        const user = JSON.parse(currentUser);
+        updateNavigation(user);
+        return user;
+      }
+
+      function updateNavigation(user) {
+        document.getElementById('userMenu').style.display = 'flex';
+        document.getElementById('userName').textContent = user.name;
+        document.getElementById('userAvatar').textContent = user.name.charAt(0).toUpperCase();
+
+        let navLinks = `
+          <a href="home_page.html">Home</a>
+          <a href="#how-it-works">How It Works</a>
+        `;
+
+        if (user.role === 'donor') {
+          navLinks += `
+            <a href="donation.html">Donate Food</a>
+            <a href="dashboard.html">My Donations</a>
+          `;
+        } else if (user.role === 'urban-planner') {
+          navLinks += `
+            <a href="dashboard.html">Dashboard</a>
+            <a href="equity.html">Food Equity</a>
+            <a href="environment.html">Waste-to-Resource</a>
+          `;
+        }
+
+        navLinks += `<a href="#about">About</a>`;
+        document.getElementById('mainNav').innerHTML = navLinks;
+
+        // Update CTA buttons based on role
+        if (user.role === 'donor') {
+          document.getElementById('ctaButtons').innerHTML = `
+            <a href="donation.html" class="btn btn-primary">Donate Food Now</a>
+            <a href="dashboard.html" class="btn btn-secondary">View My Impact</a>
+          `;
+          document.getElementById('footerCtaButtons').innerHTML = `
+            <a href="donation.html" class="btn btn-primary">Donate Now</a>
+            <a href="dashboard.html" class="btn btn-secondary">View My Impact</a>
+          `;
+        } else {
+          document.getElementById('ctaButtons').innerHTML = `
+            <a href="dashboard.html" class="btn btn-primary">Access Dashboard</a>
+            <a href="environment.html" class="btn btn-secondary">Land Use Analysis</a>
+          `;
+          document.getElementById('footerCtaButtons').innerHTML = `
+            <a href="dashboard.html" class="btn btn-primary">Access Dashboard</a>
+            <a href="environment.html" class="btn btn-secondary">Land Use Analysis</a>
+          `;
+        }
+      }
+
+      function logout() {
+        if (confirm('Are you sure you want to logout?')) {
+          localStorage.removeItem('terranovaCurrentUser');
+          window.location.href = 'home_page.html';
+        }
+      }
+
+      // Check authentication on page load
+      document.addEventListener('DOMContentLoaded', function() {
+        checkAuth();
+      });
+    </script>
+  </body>
 </html>

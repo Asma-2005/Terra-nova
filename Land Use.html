@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waste-to-Resource & Land Use - Terra-Nova</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .brand h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #27ae60;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .logout-btn {
+            padding: 0.5rem 1.2rem;
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            border-radius: 20px;
+            color: #e74c3c;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            border: none;
+        }
+
+        .logout-btn:hover {
+            background: rgba(231, 76, 60, 0.3);
+        }
+
+        .page-container {
+            margin-top: 100px;
+            padding: 2rem 3%;
+            max-width: 1800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .breadcrumb {
+            display: flex;
+            gap: 0.5rem;
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .breadcrumb a {
+            color: #2980b9;
+            text-decoration: none;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-header h2 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: #aaa;
+            font-size: 1.1rem;
+        }
+
+        .tool-section {
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.8), rgba(30, 30, 30, 0.6));
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .tool-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .tool-header h3 {
+            color: #27ae60;
+            font-size: 1.8rem;
+        }
+
+        .data-badge {
+            background: rgba(41, 128, 185, 0.2);
+            color: #2980b9;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(41, 128, 185, 0.3);
+        }
+
+        .map-tools-grid {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 1.5rem;
+        }
+
+        .map-controls {
+            background: rgba(10, 10, 10, 0.5);
+            border-radius: 15px;
+            padding: 1.5rem;
+        }
+
+        .control-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .control-label {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .control-input {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.9rem;
+        }
+
+        .control-input:focus {
+            outline: none;
+            border-color: #27ae60;
+        }
+
+        .analyze-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #27ae60, #229954);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .analyze-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+        }
+
+        .map-viewer {
+            height: 500px;
+            background: #111;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #landUseMap {
+            width: 100%;
+            height: 100%;
+        }
+
+        .site-results {
+            margin-top: 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .site-card {
+            background: rgba(10, 10, 10, 0.5);
+            border-radius: 10px;
+            padding: 1.5rem;
+            border: 1px solid rgba(39, 174, 96, 0.3);
+            transition: all 0.3s;
+        }
+
+        .site-card:hover {
+            border-color: #27ae60;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.2);
+        }
+
+        .site-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .site-id {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .suitability-score {
+            background: rgba(39, 174, 96, 0.2);
+            color: #27ae60;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+        }
+
+        .site-details {
+            color: #888;
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+
+        .monitoring-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .chart-container {
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.8), rgba(30, 30, 30, 0.6));
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .recycling-meter {
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.8), rgba(30, 30, 30, 0.6));
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .meter-circle {
+            width: 200px;
+            height: 200px;
+            margin: 2rem auto;
+            border-radius: 50%;
+            background: conic-gradient(
+                #27ae60 0deg,
+                #27ae60 332deg,
+                rgba(255, 255, 255, 0.1) 332deg
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .meter-inner {
+            width: 160px;
+            height: 160px;
+            background: #0a0a0a;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .meter-value {
+            font-size: 3rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .meter-label {
+            color: #888;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .impact-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .impact-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(10, 10, 10, 0.5);
+            border-radius: 10px;
+        }
+
+        .impact-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #27ae60;
+        }
+
+        .impact-label {
+            color: #888;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 1200px) {
+            .monitoring-section {
+                grid-template-columns: 1fr;
+            }
+
+            .map-tools-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo">🌍</div>
+                <div class="brand">
+                    <h1>Terra-Nova</h1>
+                </div>
+            </div>
+            <nav>
+                <a href="home_page.html">Home</a>
+                <a href="donation.html">Donate</a>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="equity.html">Food Equity</a>
+                <a href="environment.html">Waste-to-Resource</a>
+            </nav>
+            <div class="user-menu">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">P</div>
+                    <span id="userName">Planner</span>
+                </div>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-container">
+        <div class="breadcrumb">
+            <a href="dashboard.html">Dashboard</a>
+            <span>></span>
+            <span>Waste-to-Resource & Land Use</span>
+        </div>
+
+        <div class="page-header">
+            <h2>Waste-to-Resource & Land Use Strategy</h2>
+            <p>Smart city growth through HLS/CSA RCM land use analysis and NDVI monitoring</p>
+        </div>
+
+        <div class="tool-section">
+            <div class="tool-header">
+                <h3>Compost Site Locator Tool</h3>
+                <div class="data-badge">HLS/CSA RCM High-Resolution Imagery</div>
+            </div>
+
+            <div class="map-tools-grid">
+                <div class="map-controls">
+                    <h4 style="color: #2980b9; margin-bottom: 1rem;">Site Analysis Parameters</h4>
+                    
+                    <div class="control-group">
+                        <label class="control-label">Area of Interest</label>
+                        <select class="control-input" id="areaSelect">
+                            <option>Select district</option>
+                            <option>North District</option>
+                            <option>East Brooklyn</option>
+                            <option>Queens Border</option>
+                            <option>West Side</option>
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">Minimum Site Area (m²)</label>
+                        <input type="number" class="control-input" value="5000" min="1000">
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">Land Use Filter</label>
+                        <select class="control-input">
+                            <option>Vacant Lots</option>
+                            <option>Underutilized Land</option>
+                            <option>Urban Gardens</option>
+                            <option>All Available</option>
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">Proximity to Transport</label>
+                        <select class="control-input">
+                            <option>Within 500m</option>
+                            <option>Within 1km</option>
+                            <option>Within 2km</option>
+                            <option>Any distance</option>
+                        </select>
+                    </div>
+
+                    <button class="analyze-btn" onclick="analyzeSites()">Analyze Available Sites</button>
+                </div>
+
+                <div class="map-viewer">
+                    <div id="landUseMap"></div>
+                </div>
+            </div>
+
+            <div class="site-results" id="siteResults">
+                <div class="site-card">
+                    <div class="site-header">
+                        <span class="site-id">Site NR-01</span>
+                        <span class="suitability-score">95% Match</span>
+                    </div>
+                    <div class="site-details">
+                        <div>Area: 8,500 m²</div>
+                        <div>Location: North District, Sector 4</div>
+                        <div>Transport: 320m to main road</div>
+                        <div>Status: Vacant municipal land</div>
+                        <div style="color: #27ae60; margin-top: 0.5rem;">✓ Optimal for composting facility</div>
+                    </div>
+                </div>
+
+                <div class="site-card">
+                    <div class="site-header">
+                        <span class="site-id">Site EB-05</span>
+                        <span class="suitability-score">88% Match</span>
+                    </div>
+                    <div class="site-details">
+                        <div>Area: 6,200 m²</div>
+                        <div>Location: East Brooklyn, Zone 2</div>
+                        <div>Transport: 450m to arterial</div>
+                        <div>Status: Former industrial lot</div>
+                        <div style="color: #27ae60; margin-top: 0.5rem;">✓ Suitable for urban farm</div>
+                    </div>
+                </div>
+
+                <div class="site-card">
+                    <div class="site-header">
+                        <span class="site-id">Site QB-12</span>
+                        <span class="suitability-score">82% Match</span>
+                    </div>
+                    <div class="site-details">
+                        <div>Area: 12,400 m²</div>
+                        <div>Location: Queens Border, District 7</div>
+                        <div>Transport: 680m to highway access</div>
+                        <div>Status: Underutilized parking lot</div>
+                        <div style="color: #f39c12; margin-top: 0.5rem;">⚠ Requires zoning approval</div>
+                    </div>
+                </div>
+
+                <div class="site-card">
+                    <div class="site-header">
+                        <span class="site-id">Site NR-08</span>
+                        <span class="suitability-score">91% Match</span>
+                    </div>
+                    <div class="site-details">
+                        <div>Area: 7,800 m²</div>
+                        <div>Location: North District, Sector 9</div>
+                        <div>Transport: 280m to collection point</div>
+                        <div>Status: City-owned vacant land</div>
+                        <div style="color: #27ae60; margin-top: 0.5rem;">✓ Ready for development</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="monitoring-section">
+            <div class="chart-container">
+                <div class="tool-header">
+                    <h3>NDVI Monitoring - Urban Farm Sites</h3>
+                    <div class="data-badge">INPE/HLS NDVI Time-Series</div>
+                </div>
+                <canvas id="ndviChart"></canvas>
+                <p style="color: #888; font-size: 0.9rem; margin-top: 1rem;">
+                    Normalized Difference Vegetation Index tracks vegetation health and soil quality improvements at composting sites over time.
+                </p>
+            </div>
+
+            <div class="recycling-meter">
+                <div class="tool-header">
+                    <h3>Waste Diversion Flow Meter</h3>
+                </div>
+
+                <div class="meter-circle">
+                    <div class="meter-inner">
+                        <div class="meter-value">92.4%</div>
+                        <div class="meter-label">Diverted</div>
+                    </div>
+                </div>
+
+                <div class="impact-stats">
+                    <div class="impact-item">
+                        <div class="impact-number">847</div>
+                        <div class="impact-label">Tons CO₂ Prevented</div>
+                    </div>
+                    <div class="impact-item">
+                        <div class="impact-number">1,245</div>
+                        <div class="impact-label">Tons Composted</div>
+                    </div>
+                    <div class="impact-item">
+                        <div class="impact-number">7.6%</div>
+                        <div class="impact-label">To Landfill</div>
+                    </div>
+                    <div class="impact-item">
+                        <div class="impact-number">34</div>
+                        <div class="impact-label">Active Sites</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tool-section" style="margin-top: 2rem;">
+            <div class="tool-header">
+                <h3>Environmental Impact Summary</h3>
+                <div class="data-badge">Multi-Source Validation</div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                <div style="background: rgba(39, 174, 96, 0.1); padding: 1.5rem; border-radius: 15px; border: 1px solid rgba(39, 174, 96, 0.3);">
+                    <h4 style="color: #27ae60; margin-bottom: 1rem;">Methane Reduction</h4>
+                    <p style="color: #ccc; line-height: 1.6;">
+                        By diverting 92.4% of organic waste from landfills to composting facilities, the system prevents approximately 847 tons of CO₂-equivalent methane emissions monthly.
+                    </p>
+                </div>
+
+                <div style="background: rgba(41, 128, 185, 0.1); padding: 1.5rem; border-radius: 15px; border: 1px solid rgba(41, 128, 185, 0.3);">
+                    <h4 style="color: #2980b9; margin-bottom: 1rem;">Urban Green Space</h4>
+                    <p style="color: #ccc; line-height: 1.6;">
+                        HLS data identifies 12 suitable sites for urban farming, totaling 94,500 m² of available land for sustainable food production and community gardens.
+                    </p>
+                </div>
+
+                <div style="background: rgba(243, 156, 18, 0.1); padding: 1.5rem; border-radius: 15px; border: 1px solid rgba(243, 156, 18, 0.3);">
+                    <h4 style="color: #f39c12; margin-bottom: 1rem;">Soil Quality Improvement</h4>
+                    <p style="color: #ccc; line-height: 1.6;">
+                        NDVI monitoring shows average vegetation index increase of 0.23 points across urban farms using Terra-Nova compost over 6 months.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <script>
+        // Authentication check
+        function checkAuth() {
+            const currentUser = localStorage.getItem('terranovaCurrentUser');
+            if (!currentUser) {
+                window.location.href = 'login.html';
+                return null;
+            }
+            
+            const user = JSON.parse(currentUser);
+            
+            // Check if user is urban planner
+            if (user.role !== 'urban-planner') {
+                alert('Access denied. This page is for Urban Planners only.');
+                window.location.href = 'donation.html';
+                return null;
+            }
+            
+            return user;
+        }
+
+        // Logout function
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('terranovaCurrentUser');
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Initialize page
+        window.addEventListener('load', function() {
+            const user = checkAuth();
+            if (user) {
+                // Update user info in header
+                document.getElementById('userName').textContent = user.name;
+                document.getElementById('userAvatar').textContent = user.name.charAt(0).toUpperCase();
+            }
+        });
+
+        // Initialize land use map
+        const landMap = L.map('landUseMap').setView([40.7128, -74.0060], 12);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(landMap);
+
+        // Add suitable site markers
+        const sites = [
+            {lat: 40.7580, lng: -73.9855, name: 'Site NR-01', score: 95},
+            {lat: 40.6782, lng: -73.9442, name: 'Site EB-05', score: 88},
+            {lat: 40.7489, lng: -73.9680, name: 'Site QB-12', score: 82},
+            {lat: 40.7320, lng: -73.9950, name: 'Site NR-08', score: 91}
+        ];
+
+        sites.forEach(site => {
+            const color = site.score > 90 ? '#27ae60' : site.score > 85 ? '#2980b9' : '#f39c12';
+            L.marker([site.lat, site.lng], {
+                icon: L.divIcon({
+                    className: 'custom-marker',
+                    html: `<div style="background: ${color}; width: 30px; height: 30px; border-radius: 50%; border: 3px solid white; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 12px;">${site.score}</div>`
+                })
+            }).addTo(landMap)
+              .bindPopup(`<strong>${site.name}</strong><br>Suitability: ${site.score}%`);
+
+            // Add polygon representing site area
+            const circle = L.circle([site.lat, site.lng], {
+                color: color,
+                fillColor: color,
+                fillOpacity: 0.2,
+                radius: 400
+            }).addTo(landMap);
+        });
+
+        function analyzeSites() {
+            const area = document.getElementById('areaSelect').value;
+            if (area === 'Select district') {
+                alert('Please select an area of interest');
+                return;
+            }
+            alert(`Analyzing available sites in ${area}...\n\nFound 4 suitable locations based on HLS/CSA RCM data.`);
+        }
+
+        // NDVI Chart
+        const ndviCtx = document.getElementById('ndviChart').getContext('2d');
+        new Chart(ndviCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+                datasets: [{
+                    label: 'Site NR-01 (Composted)',
+                    data: [0.32, 0.35, 0.41, 0.48, 0.52, 0.55, 0.58, 0.60, 0.62],
+                    borderColor: '#27ae60',
+                    backgroundColor: 'rgba(39, 174, 96, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }, {
+                    label: 'Control Site (No Compost)',
+                    data: [0.33, 0.34, 0.35, 0.36, 0.35, 0.34, 0.35, 0.36, 0.37],
+                    borderColor: '#e74c3c',
+                    backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#888'
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Vegetation Health Improvement Over Time',
+                        color: '#27ae60',
+                        font: {
+                            size: 14
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 1,
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.05)'
+                        },
+                        ticks: {
+                            color: '#888'
+                        },
+                        title: {
+                            display: true,
+                            text: 'NDVI Score',
+                            color: '#888'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: '#888'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

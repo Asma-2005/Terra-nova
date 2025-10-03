@@ -81,6 +81,50 @@
             color: #27ae60;
         }
 
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            padding: 0.5rem 1.2rem;
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            border-radius: 20px;
+            color: #e74c3c;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            border: none;
+        }
+
+        .logout-btn:hover {
+            background: rgba(231, 76, 60, 0.3);
+        }
+
         /* Main Container */
         .main-container {
             margin-top: 100px;
@@ -567,13 +611,16 @@
                     <h1>Terra-Nova</h1>
                 </div>
             </div>
-            <nav>
-                <a href="home_page.html">Home</a>
-                <a href="donation.html">Donate</a>
-                <a href="#dashboard">Dashboard</a>
-                <a href="#about">About</a>
-                <a href="#contact">Contact</a>
+            <nav id="mainNav">
+                <!-- Navigation will be dynamically populated -->
             </nav>
+            <div class="user-menu" id="userMenu" style="display: none;">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <span id="userName">User</span>
+                </div>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
         </div>
     </header>
 
@@ -679,20 +726,6 @@
                 <!-- AI Results Container (Hidden initially) -->
                 <div class="ai-results" id="aiResults">
                     <!-- Results will be dynamically inserted here by your AI model -->
-                    <!-- Example structure for reference: -->
-                    <!--
-                    <div class="result-item">
-                        <div class="result-header">
-                            <span class="result-status status-fresh">✓ Fresh</span>
-                            <span class="confidence-score">95%</span>
-                        </div>
-                        <p><strong>Item:</strong> Fresh Vegetables</p>
-                        <div class="recommendation">
-                            <div class="recommendation-title">Recommendation:</div>
-                            <p>This food is safe for immediate donation to local food banks and shelters.</p>
-                        </div>
-                    </div>
-                    -->
                 </div>
             </div>
         </div>
@@ -724,6 +757,63 @@
     </div>
 
     <script>
+        // Authentication check for donation page
+        function checkAuth() {
+            const currentUser = localStorage.getItem('terranovaCurrentUser');
+            if (!currentUser) {
+                // Redirect to login with donation as target
+                window.location.href = 'login.html?redirect=donation';
+                return null;
+            }
+            
+            const user = JSON.parse(currentUser);
+            
+            // Check if user has donor role
+            if (user.role !== 'donor') {
+                alert('This page is for food donors only. Urban planners can access the dashboard.');
+                window.location.href = 'dashboard.html';
+                return null;
+            }
+            
+            updateNavigation(user);
+            return user;
+        }
+
+        function updateNavigation(user) {
+            document.getElementById('userMenu').style.display = 'flex';
+            document.getElementById('userName').textContent = user.name;
+            document.getElementById('userAvatar').textContent = user.name.charAt(0).toUpperCase();
+
+            const navLinks = `
+                <a href="home_page.html">Home</a>
+                <a href="donation.html">Donate</a>
+                <a href="dashboard.html">My Donations</a>
+                <a href="#about">About</a>
+            `;
+            document.getElementById('mainNav').innerHTML = navLinks;
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('terranovaCurrentUser');
+                window.location.href = 'home_page.html';
+            }
+        }
+
+        // Auto-fill donor information from user profile
+        function fillDonorInfo(user) {
+            document.getElementById('donorName').value = user.name;
+            // You can add more auto-fill logic here based on stored user profile
+        }
+
+        // Check authentication on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = checkAuth();
+            if (user) {
+                fillDonorInfo(user);
+            }
+        });
+
         // File upload handling
         const uploadArea = document.getElementById('uploadArea');
         const fileInput = document.getElementById('fileInput');
