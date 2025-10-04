@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donate Food - Terra-Nova</title>
+    <link rel="stylesheet" href="donation.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo">🌍</div>
+                <div class="brand">
+                    <h1>Terra-Nova</h1>
+                </div>
+            </div>
+            <nav>
+                <a href="home_page.html">Home</a>
+                <a href="donation.html">Donate</a>
+                <a href="#dashboard">Dashboard</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h2>Donate Food & Make an Impact</h2>
+            <p>Upload images of your food items, and our AI will analyze freshness and guide you on the best donation path.</p>
+        </div>
+
+        <!-- Progress Steps -->
+        <div class="progress-steps">
+            <div class="step active">
+                <div class="step-circle">1</div>
+                <div class="step-label">Donor Info</div>
+            </div>
+            <div class="step">
+                <div class="step-circle">2</div>
+                <div class="step-label">Upload Images</div>
+            </div>
+            <div class="step">
+                <div class="step-circle">3</div>
+                <div class="step-label">AI Analysis</div>
+            </div>
+            <div class="step">
+                <div class="step-circle">4</div>
+                <div class="step-label">Submit</div>
+            </div>
+        </div>
+
+        <!-- Donation Grid -->
+        <div class="donation-grid">
+            <!-- Left Side - Upload Section -->
+            <div class="upload-section">
+                <h3 class="section-title">📝 Donation Details</h3>
+                
+                <!-- Donor Information Form -->
+                <div class="donor-info-form">
+                    <div class="form-group">
+                        <label for="donorName">Your Name / Organization</label>
+                        <input type="text" id="donorName" placeholder="Enter your name or organization" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="donorType">Donor Type</label>
+                        <select id="donorType" required>
+                            <option value="">Select type</option>
+                            <option value="individual">Individual/Household</option>
+                            <option value="restaurant">Restaurant</option>
+                            <option value="grocery">Grocery Store</option>
+                            <option value="business">Business/Company</option>
+                            <option value="farm">Farm/Producer</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <input type="text" id="location" placeholder="City, Address" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactInfo">Contact Information</label>
+                        <input type="text" id="contactInfo" placeholder="Phone or Email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="foodDescription">Food Description (Optional)</label>
+                        <textarea id="foodDescription" placeholder="Brief description of the food items you're donating..."></textarea>
+                    </div>
+                </div>
+
+                <h3 class="section-title">📸 Upload Food Images</h3>
+
+                <!-- Image Upload Area -->
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📤</div>
+                    <div class="upload-text">Click to upload or drag and drop</div>
+                    <div class="upload-subtext">Support: JPG, PNG, WEBP (Max 5MB per image)</div>
+                    <input type="file" id="fileInput" accept="image/*" multiple>
+                </div>
+
+                <!-- Image Preview Container -->
+                <div class="image-preview-container" id="imagePreviewContainer"></div>
+
+                <!-- Analyze Button -->
+                <button class="analyze-button" id="analyzeButton" disabled>
+                    🤖 Analyze Food Quality with AI
+                </button>
+            </div>
+
+            <!-- Right Side - AI Analysis Section -->
+            <div class="ai-analysis-section">
+                <h3 class="section-title">🤖 AI Quality Analysis</h3>
+                
+                <!-- AI Placeholder (Initial State) -->
+                <div class="ai-placeholder" id="aiPlaceholder">
+                    <div class="ai-icon">🧠</div>
+                    <h3>AI Model Integration Point</h3>
+                    <p>This section will display real-time AI analysis results including food freshness classification, confidence scores, and donation recommendations.</p>
+                </div>
+
+                <!-- AI Results Container (Hidden initially) -->
+                <div class="ai-results" id="aiResults">
+                    <!-- Results will be dynamically inserted here by AI -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit Section -->
+        <div class="submit-section" id="submitSection" style="display: none;">
+            <h3>🎉 Ready to Make an Impact!</h3>
+            <p style="color: #aaa; margin-bottom: 2rem;">Your donation will help reduce food waste and support your community.</p>
+            
+            <div class="impact-stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="freshCount">0</div>
+                    <div class="stat-label">Fresh Items</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="atRiskCount">0</div>
+                    <div class="stat-label">At-Risk Items</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="compostCount">0</div>
+                    <div class="stat-label">For Composting</div>
+                </div>
+            </div>
+
+            <button class="final-submit-button" id="finalSubmitButton">
+                Submit Donation 🚀
+            </button>
+        </div>
+    </div>
+
+    <!-- Link to external JavaScript file -->
+    <script src="donation.js"></script>
+</body>
+</html>
