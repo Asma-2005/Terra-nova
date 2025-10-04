@@ -666,15 +666,21 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="donorType">Donor Type</label>
-                        <select id="donorType" required>
-                            <option value="">Select type</option>
-                            <option value="individual">Individual/Household</option>
-                            <option value="restaurant">Restaurant</option>
-                            <option value="grocery">Grocery Store</option>
-                            <option value="business">Business/Company</option>
-                            <option value="farm">Farm/Producer</option>
+                        <label for="foodType">Food Type</label>
+                        <select id="foodType" required>
+                            <option value="">Select food type</option>
+                            <option value="fruits">Fruits</option>
+                            <option value="vegetables">Vegetables</option>
+                            <option value="grains">Grains</option>
+                            <option value="dairy">Dairy</option>
+                            <option value="prepared">Prepared Food</option>
+                            <option value="other">Other</option>
                         </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="quantity">Quantity</label>
+                        <input type="text" id="quantity" placeholder="e.g., 5 kg, 10 items" required>
                     </div>
 
                     <div class="form-group">
@@ -738,15 +744,15 @@
             <div class="impact-stats">
                 <div class="stat-item">
                     <div class="stat-number" id="freshCount">0</div>
-                    <div class="stat-label">Fresh Items</div>
+                    <div class="stat-label">Edible Items</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-number" id="atRiskCount">0</div>
-                    <div class="stat-label">At-Risk Items</div>
+                    <div class="stat-label">For Composting</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number" id="compostCount">0</div>
-                    <div class="stat-label">For Composting</div>
+                    <div class="stat-number" id="totalImpact">0</div>
+                    <div class="stat-label">People Helped</div>
                 </div>
             </div>
 
@@ -770,12 +776,13 @@
             
             // Check if user has donor role
             if (user.role !== 'donor') {
-                alert('This page is for food donors only. Urban planners can access the dashboard.');
+                alert('This page is for food donors only. Organizations can access available food, and planners can get fertilizer recommendations.');
                 window.location.href = 'dashboard.html';
                 return null;
             }
             
             updateNavigation(user);
+            fillDonorInfo(user);
             return user;
         }
 
@@ -787,8 +794,8 @@
             const navLinks = `
                 <a href="home_page.html">Home</a>
                 <a href="donation.html">Donate</a>
-                <a href="dashboard.html">My Donations</a>
-                <a href="#about">About</a>
+                <a href="mydonations.html">My Donations</a>
+                <a href="dashboard.html">Dashboard</a>
             `;
             document.getElementById('mainNav').innerHTML = navLinks;
         }
@@ -803,15 +810,12 @@
         // Auto-fill donor information from user profile
         function fillDonorInfo(user) {
             document.getElementById('donorName').value = user.name;
-            // You can add more auto-fill logic here based on stored user profile
+            document.getElementById('location').value = user.location;
         }
 
         // Check authentication on page load
         document.addEventListener('DOMContentLoaded', function() {
-            const user = checkAuth();
-            if (user) {
-                fillDonorInfo(user);
-            }
+            checkAuth();
         });
 
         // File upload handling
@@ -824,6 +828,7 @@
         const submitSection = document.getElementById('submitSection');
 
         let uploadedImages = [];
+        let currentDonation = {};
 
         // Click to upload
         uploadArea.addEventListener('click', () => {
@@ -895,24 +900,43 @@
             analyzeButton.disabled = uploadedImages.length === 0;
         }
 
-        // Analyze button click - This is where your AI model will be integrated
+        // Analyze button click
         analyzeButton.addEventListener('click', () => {
+            // Validate form
+            const donorName = document.getElementById('donorName').value;
+            const foodType = document.getElementById('foodType').value;
+            const quantity = document.getElementById('quantity').value;
+            const location = document.getElementById('location').value;
+            const contactInfo = document.getElementById('contactInfo').value;
+
+            if (!donorName || !foodType || !quantity || !location || !contactInfo) {
+                alert('Please fill in all required donor information.');
+                return;
+            }
+
+            // Store donation data
+            currentDonation = {
+                donorName,
+                foodType,
+                quantity,
+                location,
+                contactInfo,
+                description: document.getElementById('foodDescription').value,
+                images: uploadedImages.length
+            };
+
             // Show loading state
             analyzeButton.textContent = '🔄 Analyzing...';
             analyzeButton.disabled = true;
 
-            // TODO: Integrate your AI model here
-            // Example: Call your AI API with uploadedImages
-            // const results = await analyzeWithAI(uploadedImages);
-
-            // Simulate AI processing (remove this when integrating real AI)
+            // Simulate AI processing
             setTimeout(() => {
                 // Hide placeholder, show results section
                 aiPlaceholder.style.display = 'none';
                 aiResults.classList.add('active');
                 
-                // Display sample results (replace with actual AI results)
-                displaySampleResults();
+                // Display analysis results
+                displayAnalysisResults();
                 
                 // Show submit section
                 submitSection.style.display = 'block';
@@ -926,44 +950,118 @@
             }, 2000);
         });
 
-        // Display sample results (Replace this with your actual AI results)
-        function displaySampleResults() {
+        // Display analysis results
+        function displayAnalysisResults() {
+            const qualityScore = Math.floor(Math.random() * 20) + 80; // 80-100% quality
+            const isEdible = qualityScore >= 90;
+            
             aiResults.innerHTML = `
-                <div class="result-item">
+                <div class="result-item ${isEdible ? '' : 'at-risk'}">
                     <div class="result-header">
-                        <span class="result-status status-fresh">✓ Fresh</span>
-                        <span class="confidence-score">92%</span>
+                        <span class="result-status ${isEdible ? 'status-fresh' : 'status-at-risk'}">
+                            ${isEdible ? '✓ Edible (>90%)' : '⚠ For Composting'}
+                        </span>
+                        <span class="confidence-score">${qualityScore}%</span>
                     </div>
-                    <p><strong>Classification:</strong> Ready for donation</p>
+                    <p><strong>Food Type:</strong> ${currentDonation.foodType}</p>
+                    <p><strong>Quantity:</strong> ${currentDonation.quantity}</p>
                     <div class="recommendation">
                         <div class="recommendation-title">📍 Recommendation:</div>
-                        <p>This food is safe for immediate donation to local food banks and community centers.</p>
+                        <p>${isEdible ? 
+                            'This food is safe for donation to organizations and charities. It will be listed in the available food section.' : 
+                            'This food will be converted into nutrient-rich compost for urban farms.'}
+                        </p>
                     </div>
                 </div>
             `;
 
             // Update stats
-            document.getElementById('freshCount').textContent = uploadedImages.length;
+            if (isEdible) {
+                document.getElementById('freshCount').textContent = uploadedImages.length;
+                document.getElementById('totalImpact').textContent = Math.floor(uploadedImages.length * 2.5); // Estimate people helped
+            } else {
+                document.getElementById('atRiskCount').textContent = uploadedImages.length;
+                document.getElementById('totalImpact').textContent = Math.floor(uploadedImages.length * 1.5); // Estimate compost impact
+            }
+
+            // Store analysis result
+            currentDonation.qualityScore = qualityScore;
+            currentDonation.isEdible = isEdible;
+            currentDonation.analysisDate = new Date().toISOString();
         }
 
         // Final submit
         document.getElementById('finalSubmitButton').addEventListener('click', () => {
-            // TODO: Implement final submission logic
-            alert('Thank you for your donation! Your contribution will help reduce food waste and support the community. 🌍💚');
+            const currentUser = JSON.parse(localStorage.getItem('terranovaCurrentUser'));
             
+            // Create donation record
+            const donation = {
+                id: 'donation_' + Date.now(),
+                ...currentDonation,
+                donorEmail: currentUser.email,
+                submittedDate: new Date().toISOString(),
+                status: 'submitted'
+            };
+
+            // Save donation to user's donation history
+            const userDonations = JSON.parse(localStorage.getItem(`terranovaDonations_${currentUser.email}`) || '[]');
+            userDonations.push(donation);
+            localStorage.setItem(`terranovaDonations_${currentUser.email}`, JSON.stringify(userDonations));
+
+            // If edible, add to available food for organizations
+            if (currentDonation.isEdible) {
+                addToAvailableFood(donation);
+            }
+
             // Update progress
             document.querySelectorAll('.step')[3].classList.add('active');
+
+            alert('Thank you for your donation! ' + 
+                  (currentDonation.isEdible ? 
+                   'Your food will be available for organizations to request.' : 
+                   'Your food will be converted into compost to help urban farms.') + 
+                  ' 🌍💚');
+
+            // Redirect to my donations page after 2 seconds
+            setTimeout(() => {
+                window.location.href = 'mydonations.html';
+            }, 2000);
         });
+
+        // Add donated food to available food list for organizations
+        function addToAvailableFood(donation) {
+            const availableFood = JSON.parse(localStorage.getItem('terranovaAvailableFood') || '[]');
+            
+            const foodItem = {
+                id: 'food_' + Date.now(),
+                name: donation.foodType.charAt(0).toUpperCase() + donation.foodType.slice(1),
+                quality: donation.qualityScore,
+                quantity: donation.quantity,
+                donorName: donation.donorName,
+                donorEmail: donation.donorEmail,
+                location: donation.location,
+                description: donation.description,
+                donationDate: donation.submittedDate,
+                expiryDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(), // 3 days from now
+                requested: false,
+                status: 'available'
+            };
+
+            availableFood.push(foodItem);
+            localStorage.setItem('terranovaAvailableFood', JSON.stringify(availableFood));
+        }
 
         // Update progress steps based on form completion
         document.getElementById('donorName').addEventListener('input', updateProgressSteps);
-        document.getElementById('donorType').addEventListener('change', updateProgressSteps);
+        document.getElementById('foodType').addEventListener('change', updateProgressSteps);
+        document.getElementById('quantity').addEventListener('input', updateProgressSteps);
 
         function updateProgressSteps() {
             const name = document.getElementById('donorName').value;
-            const type = document.getElementById('donorType').value;
+            const type = document.getElementById('foodType').value;
+            const quantity = document.getElementById('quantity').value;
             
-            if (name && type) {
+            if (name && type && quantity) {
                 document.querySelectorAll('.step')[1].classList.add('active');
             }
         }

@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organization Portal - Terra-Nova</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .brand h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #27ae60;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            padding: 0.5rem 1.2rem;
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            border-radius: 20px;
+            color: #e74c3c;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            border: none;
+        }
+
+        .logout-btn:hover {
+            background: rgba(231, 76, 60, 0.3);
+        }
+
+        /* Main Container */
+        .main-container {
+            margin-top: 100px;
+            padding: 3rem 5%;
+            max-width: 1600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            color: #aaa;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Food Grid */
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .food-card {
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.8), rgba(30, 30, 30, 0.6));
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+
+        .food-card:hover {
+            transform: translateY(-5px);
+            border-color: #27ae60;
+            box-shadow: 0 10px 30px rgba(39, 174, 96, 0.2);
+        }
+
+        .food-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .food-title {
+            font-size: 1.5rem;
+            color: #27ae60;
+        }
+
+        .food-quality {
+            background: rgba(39, 174, 96, 0.2);
+            color: #27ae60;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .food-details {
+            color: #ccc;
+            margin-bottom: 1.5rem;
+        }
+
+        .food-detail {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .food-detail-label {
+            color: #888;
+        }
+
+        .pickup-info {
+            background: rgba(41, 128, 185, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .pickup-info h4 {
+            color: #2980b9;
+            margin-bottom: 0.5rem;
+        }
+
+        .request-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #27ae60, #229954);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .request-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4);
+        }
+
+        .request-btn.requested {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+        }
+
+        .request-btn.disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background: linear-gradient(135deg, rgba(39, 174, 96, 0.1), rgba(41, 128, 185, 0.1));
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            border: 1px solid rgba(39, 174, 96, 0.3);
+            margin-bottom: 3rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            padding: 1.5rem;
+            background: rgba(10, 10, 10, 0.5);
+            border-radius: 15px;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        /* My Requests Section */
+        .requests-section {
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.8), rgba(30, 30, 30, 0.6));
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: #27ae60;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .requests-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .request-item {
+            background: rgba(10, 10, 10, 0.5);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border-left: 4px solid #f39c12;
+        }
+
+        .request-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .request-food {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .request-status {
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: rgba(243, 156, 18, 0.2);
+            color: #f39c12;
+        }
+
+        .status-approved {
+            background: rgba(39, 174, 96, 0.2);
+            color: #27ae60;
+        }
+
+        .status-completed {
+            background: rgba(41, 128, 185, 0.2);
+            color: #2980b9;
+        }
+
+        .request-details {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                display: none;
+            }
+
+            .page-header h2 {
+                font-size: 2rem;
+            }
+
+            .food-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo">🌍</div>
+                <div class="brand">
+                    <h1>Terra-Nova</h1>
+                </div>
+            </div>
+            <nav id="mainNav">
+                <!-- Navigation will be dynamically populated -->
+            </nav>
+            <div class="user-menu" id="userMenu" style="display: none;">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">O</div>
+                    <span id="userName">Organization</span>
+                </div>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h2>Available Food Donations</h2>
+            <p>Browse available food items, request what you need, and pick up from Terra-Nova headquarters to serve your community.</p>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="stats-section">
+            <h3>Your Impact This Month</h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" id="totalRequests">0</div>
+                    <div class="stat-label">Total Requests</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="peopleServed">0</div>
+                    <div class="stat-label">People Served</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="foodSaved">0</div>
+                    <div class="stat-label">Kg Food Saved</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="activeRequests">0</div>
+                    <div class="stat-label">Active Requests</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Available Food Section -->
+        <div class="requests-section">
+            <h3 class="section-title">🍽️ Available Food Items</h3>
+            <div class="food-grid" id="foodGrid">
+                <!-- Food items will be dynamically populated -->
+            </div>
+        </div>
+
+        <!-- My Requests Section -->
+        <div class="requests-section">
+            <h3 class="section-title">📋 My Requests</h3>
+            <div class="requests-list" id="requestsList">
+                <!-- Requests will be dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Authentication check for organization page
+        function checkAuth() {
+            const currentUser = localStorage.getItem('terranovaCurrentUser');
+            if (!currentUser) {
+                window.location.href = 'login.html?redirect=organization';
+                return null;
+            }
+            
+            const user = JSON.parse(currentUser);
+            
+            // Check if user has organization role
+            if (user.role !== 'organization') {
+                alert('This page is for organizations and charities only.');
+                window.location.href = 'dashboard.html';
+                return null;
+            }
+            
+            updateNavigation(user);
+            loadAvailableFood();
+            loadMyRequests();
+            updateStats();
+            return user;
+        }
+
+        function updateNavigation(user) {
+            document.getElementById('userMenu').style.display = 'flex';
+            document.getElementById('userName').textContent = user.name;
+            document.getElementById('userAvatar').textContent = user.name.charAt(0).toUpperCase();
+
+            const navLinks = `
+                <a href="home_page.html">Home</a>
+                <a href="organization.html">Available Food</a>
+                <a href="dashboard.html">My Dashboard</a>
+                <a href="#about">About</a>
+            `;
+            document.getElementById('mainNav').innerHTML = navLinks;
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('terranovaCurrentUser');
+                window.location.href = 'home_page.html';
+            }
+        }
+
+        // Load available food from donations
+        function loadAvailableFood() {
+            const availableFood = JSON.parse(localStorage.getItem('terranovaAvailableFood') || '[]');
+            const foodGrid = document.getElementById('foodGrid');
+            
+            if (availableFood.length === 0) {
+                foodGrid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: #888;">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">🍽️</div>
+                        <h3>No Available Food Items</h3>
+                        <p>Check back later for new donations from our community.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            foodGrid.innerHTML = availableFood.map(food => `
+                <div class="food-card">
+                    <div class="food-header">
+                        <div class="food-title">${food.name}</div>
+                        <div class="food-quality">${food.quality}% Fresh</div>
+                    </div>
+                    <div class="food-details">
+                        <div class="food-detail">
+                            <span class="food-detail-label">Quantity:</span>
+                            <span>${food.quantity}</span>
+                        </div>
+                        <div class="food-detail">
+                            <span class="food-detail-label">Donated By:</span>
+                            <span>${food.donorName}</span>
+                        </div>
+                        <div class="food-detail">
+                            <span class="food-detail-label">Donated On:</span>
+                            <span>${new Date(food.donationDate).toLocaleDateString()}</span>
+                        </div>
+                    </div>
+                    <div class="pickup-info">
+                        <h4>📍 Pickup Information</h4>
+                        <p>Terra-Nova Headquarters</p>
+                        <p>123 Sustainability Ave, Green City</p>
+                        <p>Available until: ${new Date(food.expiryDate).toLocaleDateString()}</p>
+                    </div>
+                    <button class="request-btn" onclick="requestFood('${food.id}')" 
+                            ${food.requested ? 'class="request-btn requested" disabled' : ''}>
+                        ${food.requested ? '✓ Requested' : 'Request This Food'}
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Load organization's requests
+        function loadMyRequests() {
+            const currentUser = JSON.parse(localStorage.getItem('terranovaCurrentUser'));
+            const allRequests = JSON.parse(localStorage.getItem('terranovaFoodRequests') || '[]');
+            const myRequests = allRequests.filter(req => req.organizationEmail === currentUser.email);
+            
+            const requestsList = document.getElementById('requestsList');
+            
+            if (myRequests.length === 0) {
+                requestsList.innerHTML = `
+                    <div style="text-align: center; padding: 2rem; color: #888;">
+                        <p>You haven't made any requests yet.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            requestsList.innerHTML = myRequests.map(request => `
+                <div class="request-item">
+                    <div class="request-header">
+                        <div class="request-food">${request.foodName}</div>
+                        <div class="request-status status-${request.status}">${request.status.charAt(0).toUpperCase() + request.status.slice(1)}</div>
+                    </div>
+                    <div class="request-details">
+                        <div>Quantity: ${request.quantity}</div>
+                        <div>Requested: ${new Date(request.requestDate).toLocaleDateString()}</div>
+                        <div>Pickup Location: Terra-Nova Headquarters</div>
+                        ${request.status === 'approved' ? '<div style="color: #27ae60; margin-top: 0.5rem;">✓ Ready for pickup</div>' : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Request food function
+        function requestFood(foodId) {
+            const availableFood = JSON.parse(localStorage.getItem('terranovaAvailableFood') || '[]');
+            const food = availableFood.find(f => f.id === foodId);
+            const currentUser = JSON.parse(localStorage.getItem('terranovaCurrentUser'));
+
+            if (!food) {
+                alert('Food item not found.');
+                return;
+            }
+
+            // Create request
+            const request = {
+                id: 'req_' + Date.now(),
+                foodId: foodId,
+                foodName: food.name,
+                quantity: food.quantity,
+                organizationName: currentUser.name,
+                organizationEmail: currentUser.email,
+                requestDate: new Date().toISOString(),
+                status: 'pending',
+                pickupLocation: 'Terra-Nova Headquarters'
+            };
+
+            // Save request
+            const allRequests = JSON.parse(localStorage.getItem('terranovaFoodRequests') || '[]');
+            allRequests.push(request);
+            localStorage.setItem('terranovaFoodRequests', JSON.stringify(allRequests));
+
+            // Mark food as requested
+            food.requested = true;
+            localStorage.setItem('terranovaAvailableFood', JSON.stringify(availableFood));
+
+            alert('Food request submitted successfully! Our team will contact you for pickup arrangements.');
+            
+            // Reload data
+            loadAvailableFood();
+            loadMyRequests();
+            updateStats();
+        }
+
+        // Update organization stats
+        function updateStats() {
+            const currentUser = JSON.parse(localStorage.getItem('terranovaCurrentUser'));
+            const allRequests = JSON.parse(localStorage.getItem('terranovaFoodRequests') || '[]');
+            const myRequests = allRequests.filter(req => req.organizationEmail === currentUser.email);
+            
+            document.getElementById('totalRequests').textContent = myRequests.length;
+            document.getElementById('activeRequests').textContent = myRequests.filter(req => req.status === 'pending' || req.status === 'approved').length;
+            
+            // Calculate estimated impact
+            const estimatedPeople = myRequests.length * 10; // Rough estimate
+            const estimatedFood = myRequests.length * 5; // Rough estimate in kg
+            
+            document.getElementById('peopleServed').textContent = estimatedPeople;
+            document.getElementById('foodSaved').textContent = estimatedFood;
+        }
+
+        // Check authentication on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+        });
+    </script>
+</body>
+</html>

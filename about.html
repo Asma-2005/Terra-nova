@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Terra-Nova</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .brand h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #27ae60;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            padding: 0.5rem 1.2rem;
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            border-radius: 20px;
+            color: #e74c3c;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            border: none;
+        }
+
+        .logout-btn:hover {
+            background: rgba(231, 76, 60, 0.3);
+        }
+
+        /* Main Container */
+        .main-container {
+            margin-top: 100px;
+            padding: 3rem 5%;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .page-header h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            color: #aaa;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Mission Section */
+        .mission-section {
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.8), rgba(30, 30, 30, 0.6));
+            border-radius: 20px;
+            padding: 4rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .mission-icon {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+        }
+
+        .mission-section h3 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #27ae60;
+        }
+
+        .mission-section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #ccc;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+
+        /* How It Works Section */
+        .how-it-works {
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.8), rgba(30, 30, 30, 0.6));
+            border-radius: 20px;
+            padding: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: #27ae60;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .workflow {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .workflow-step {
+            background: rgba(10, 10, 10, 0.5);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .workflow-step:hover {
+            transform: translateY(-5px);
+            border: 1px solid rgba(39, 174, 96, 0.3);
+        }
+
+        .step-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            border-radius: 50%;
+            line-height: 40px;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .workflow-step h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #27ae60;
+        }
+
+        .workflow-step p {
+            color: #aaa;
+            line-height: 1.6;
+        }
+
+        /* Impact Section */
+        .impact-section {
+            background: linear-gradient(135deg, rgba(39, 174, 96, 0.1), rgba(41, 128, 185, 0.1));
+            border-radius: 20px;
+            padding: 3rem;
+            border: 1px solid rgba(39, 174, 96, 0.3);
+            margin-bottom: 3rem;
+        }
+
+        .impact-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .impact-item {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(10, 10, 10, 0.5);
+            border-radius: 15px;
+        }
+
+        .impact-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .impact-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .impact-label {
+            color: #aaa;
+            font-size: 1rem;
+        }
+
+        /* Team Section */
+        .team-section {
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.8), rgba(30, 30, 30, 0.6));
+            border-radius: 20px;
+            padding: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .team-member {
+            background: rgba(10, 10, 10, 0.5);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .team-member:hover {
+            transform: translateY(-5px);
+            border: 1px solid rgba(39, 174, 96, 0.3);
+        }
+
+        .member-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .member-name {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: #27ae60;
+        }
+
+        .member-role {
+            color: #2980b9;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .member-bio {
+            color: #aaa;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                display: none;
+            }
+
+            .page-header h2 {
+                font-size: 2rem;
+            }
+
+            .mission-section {
+                padding: 2rem;
+            }
+
+            .workflow {
+                grid-template-columns: 1fr;
+            }
+
+            .impact-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo">🌍</div>
+                <div class="brand">
+                    <h1>Terra-Nova</h1>
+                </div>
+            </div>
+            <nav id="mainNav">
+                <!-- Navigation will be dynamically populated -->
+            </nav>
+            <div class="user-menu" id="userMenu" style="display: none;">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <span id="userName">User</span>
+                </div>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h2>About Terra-Nova</h2>
+            <p>Transforming food systems through technology, data, and community collaboration</p>
+        </div>
+
+        <!-- Mission Section -->
+        <div class="mission-section">
+            <div class="mission-icon">🌍</div>
+            <h3>Our Mission</h3>
+            <p>
+                Terra-Nova is revolutionizing how cities manage food waste and distribution. 
+                We combine AI-powered food analysis with NASA Earth observation data to create 
+                sustainable food systems that benefit communities, reduce environmental impact, 
+                and support urban planning.
+            </p>
+            <p>
+                Our platform connects food donors with organizations in need while converting 
+                food waste into valuable resources for urban agriculture. Through data-driven 
+                insights and community collaboration, we're building smarter, more sustainable cities.
+            </p>
+        </div>
+
+        <!-- How It Works Section -->
+        <div class="how-it-works">
+            <h3 class="section-title">How Terra-Nova Works</h3>
+            <div class="workflow">
+                <div class="workflow-step">
+                    <div class="step-icon">🤖</div>
+                    <div class="step-number">1</div>
+                    <h4>AI Food Analysis</h4>
+                    <p>Donors upload food images, and our AI analyzes quality and freshness in real-time, classifying items as edible or suitable for composting.</p>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-icon">🏢</div>
+                    <div class="step-number">2</div>
+                    <h4>Organization Access</h4>
+                    <p>Charities and organizations access available food donations, request items, and coordinate pickups to serve their communities.</p>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-icon">🌱</div>
+                    <div class="step-number">3</div>
+                    <h4>Compost & Fertilizer</h4>
+                    <p>Lower quality food becomes nutrient-rich compost. Urban planners get personalized fertilizer recommendations using NASA soil data.</p>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-icon">📊</div>
+                    <div class="step-number">4</div>
+                    <h4>Data Insights</h4>
+                    <p>Urban planners access real-time dashboards with NASA data to make informed decisions about food systems and urban development.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Impact Section -->
+        <div class="impact-section">
+            <h3 class="section-title">Our Impact</h3>
+            <div class="impact-stats">
+                <div class="impact-item">
+                    <div class="impact-icon">🍽️</div>
+                    <div class="impact-number" id="mealsSaved">1,250+</div>
+                    <div class="impact-label">Meals Provided</div>
+                </div>
+                <div class="impact-item">
+                    <div class="impact-icon">🌿</div>
+                    <div class="impact-number" id="wasteDiverted">5.2T</div>
+                    <div class="impact-label">Food Waste Diverted</div>
+                </div>
+                <div class="impact-item">
+                    <div class="impact-icon">🏙️</div>
+                    <div class="impact-number" id="citiesServed">12+</div>
+                    <div class="impact-label">Cities Served</div>
+                </div>
+                <div class="impact-item">
+                    <div class="impact-icon">🤝</div>
+                    <div class="impact-number" id="partners">45+</div>
+                    <div class="impact-label">Partner Organizations</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Team Section -->
+        <div class="team-section">
+            <h3 class="section-title">Our Team</h3>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="member-avatar">SD</div>
+                    <div class="member-name">Sarah Chen</div>
+                    <div class="member-role">CEO & Founder</div>
+                    <div class="member-bio">Former urban planner with 10+ years in sustainable city development and food system innovation.</div>
+                </div>
+                <div class="team-member">
+                    <div class="member-avatar">MJ</div>
+                    <div class="member-name">Dr. Marcus Johnson</div>
+                    <div class="member-role">Chief Technology Officer</div>
+                    <div class="member-bio">AI and machine learning expert specializing in computer vision and environmental applications.</div>
+                </div>
+                <div class="team-member">
+                    <div class="member-avatar">EP</div>
+                    <div class="member-name">Elena Rodriguez</div>
+                    <div class="member-role">Head of Community Partnerships</div>
+                    <div class="member-bio">Non-profit leader with extensive experience in food security and community organizing.</div>
+                </div>
+                <div class="team-member">
+                    <div class="member-avatar">AK</div>
+                    <div class="member-name">Dr. Arjun Kumar</div>
+                    <div class="member-role">Data Science Lead</div>
+                    <div class="member-bio">NASA data specialist and environmental scientist focused on sustainable urban development.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Authentication and navigation management
+        function checkAuth() {
+            const currentUser = localStorage.getItem('terranovaCurrentUser');
+            if (!currentUser) {
+                // Not logged in - show basic navigation
+                document.getElementById('userMenu').style.display = 'none';
+                document.getElementById('mainNav').innerHTML = `
+                    <a href="home_page.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="login.html">Login</a>
+                    <a href="signup.html">Sign Up</a>
+                `;
+                return null;
+            }
+            
+            const user = JSON.parse(currentUser);
+            updateNavigation(user);
+            return user;
+        }
+
+        function updateNavigation(user) {
+            document.getElementById('userMenu').style.display = 'flex';
+            document.getElementById('userName').textContent = user.name;
+            document.getElementById('userAvatar').textContent = user.name.charAt(0).toUpperCase();
+
+            let navLinks = `
+                <a href="home_page.html">Home</a>
+                <a href="about.html">About</a>
+            `;
+
+            if (user.role === 'donor') {
+                navLinks += `
+                    <a href="donation.html">Donate</a>
+                    <a href="mydonations.html">My Donations</a>
+                `;
+            } else if (user.role === 'organization') {
+                navLinks += `
+                    <a href="organization.html">Available Food</a>
+                    <a href="dashboard.html">My Requests</a>
+                `;
+            } else if (user.role === 'planner') {
+                navLinks += `
+                    <a href="planner.html">Get Fertilizer</a>
+                    <a href="dashboard.html">My Orders</a>
+                `;
+            }
+
+            document.getElementById('mainNav').innerHTML = navLinks;
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('terranovaCurrentUser');
+                window.location.href = 'home_page.html';
+            }
+        }
+
+        // Calculate impact statistics
+        function calculateImpactStats() {
+            // Get all donations across all users
+            const allUsers = JSON.parse(localStorage.getItem('terranovaUsers') || '[]');
+            let totalMeals = 0;
+            let totalWaste = 0;
+            
+            allUsers.forEach(user => {
+                const userDonations = JSON.parse(localStorage.getItem(`terranovaDonations_${user.email}`) || '[]');
+                userDonations.forEach(donation => {
+                    if (donation.isEdible) {
+                        totalMeals += Math.floor(donation.images * 2.5);
+                    }
+                    totalWaste += donation.images;
+                });
+            });
+
+            // Update impact numbers
+            document.getElementById('mealsSaved').textContent = totalMeals.toLocaleString() + '+';
+            document.getElementById('wasteDiverted').textContent = (totalWaste * 0.5).toFixed(1) + 'T';
+        }
+
+        // Check authentication on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+            calculateImpactStats();
+        });
+    </script>
+</body>
+</html>

@@ -1,438 +1,479 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Terra-Nova</title>
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-      body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background: #0a0a0a;
-        color: #ffffff;
-        overflow-x: hidden;
-      }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
 
-      /* Header styles */
-      header {
-        background: rgba(10, 10, 10, 0.95);
-        backdrop-filter: blur(10px);
-        padding: 1.5rem 5%;
-        position: fixed;
-        width: 100%;
-        top: 0;
-        z-index: 1000;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      }
+        /* Header styles */
+        header {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-      .header-content {
-        max-width: 1600px;
-        margin: 0 auto;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-      .logo-section {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-      }
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
 
-      .logo {
-        width: 50px;
-        height: 50px;
-        background: linear-gradient(135deg, #27ae60, #2980b9);
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5rem;
-      }
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
 
-      .brand h1 {
-        font-size: 1.5rem;
-        font-weight: 700;
-        background: linear-gradient(135deg, #27ae60, #2980b9);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-      }
+        .brand h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-      nav {
-        display: flex;
-        gap: 2rem;
-      }
-
-      nav a {
-        color: #fff;
-        text-decoration: none;
-        font-weight: 500;
-        transition: color 0.3s;
-      }
-
-      nav a:hover {
-        color: #27ae60;
-      }
-
-      .user-menu {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-      }
-
-      .user-info {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.5rem 1rem;
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 20px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-      }
-
-      .user-avatar {
-        width: 32px;
-        height: 32px;
-        background: linear-gradient(135deg, #27ae60, #2980b9);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 0.9rem;
-        font-weight: bold;
-      }
-
-      .logout-btn {
-        padding: 0.5rem 1.2rem;
-        background: rgba(231, 76, 60, 0.2);
-        border: 1px solid rgba(231, 76, 60, 0.3);
-        border-radius: 20px;
-        color: #e74c3c;
-        cursor: pointer;
-        transition: all 0.3s;
-        font-size: 0.9rem;
-        border: none;
-      }
-
-      .logout-btn:hover {
-        background: rgba(231, 76, 60, 0.3);
-      }
-
-      .dashboard-container {
-        margin-top: 100px;
-        padding: 2rem 5%;
-        max-width: 1400px;
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      .welcome-section {
-        text-align: center;
-        margin-bottom: 3rem;
-      }
-
-      .welcome-section h2 {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-        background: linear-gradient(135deg, #27ae60, #2980b9);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-      }
-
-      .welcome-section p {
-        color: #aaa;
-        font-size: 1.1rem;
-      }
-
-      .role-cards {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-        gap: 2rem;
-        margin-bottom: 3rem;
-      }
-
-      .role-card {
-        background: linear-gradient(
-          135deg,
-          rgba(20, 20, 20, 0.8),
-          rgba(30, 30, 30, 0.6)
-        );
-        border-radius: 20px;
-        padding: 2.5rem;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        text-align: center;
-        transition: all 0.3s;
-      }
-
-      .role-card:hover {
-        transform: translateY(-5px);
-        border-color: #27ae60;
-        box-shadow: 0 10px 30px rgba(39, 174, 96, 0.2);
-      }
-
-      .role-icon {
-        font-size: 3rem;
-        margin-bottom: 1.5rem;
-      }
-
-      .role-card h3 {
-        font-size: 1.8rem;
-        margin-bottom: 1rem;
-        color: #27ae60;
-      }
-
-      .role-card p {
-        color: #ccc;
-        margin-bottom: 2rem;
-        line-height: 1.6;
-      }
-
-      .btn {
-        padding: 1rem 2rem;
-        background: linear-gradient(135deg, #27ae60, #229954);
-        border: none;
-        border-radius: 50px;
-        color: white;
-        font-size: 1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s;
-        text-decoration: none;
-        display: inline-block;
-      }
-
-      .btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
-      }
-
-      .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1.5rem;
-        margin-top: 2rem;
-      }
-
-      .stat-card {
-        background: rgba(20, 20, 20, 0.6);
-        border-radius: 15px;
-        padding: 1.5rem;
-        text-align: center;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-      }
-
-      .stat-number {
-        font-size: 2.5rem;
-        font-weight: bold;
-        background: linear-gradient(135deg, #27ae60, #2980b9);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        margin-bottom: 0.5rem;
-      }
-
-      .stat-label {
-        color: #888;
-        font-size: 0.9rem;
-      }
-
-      @media (max-width: 768px) {
         nav {
-          display: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #27ae60;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            padding: 0.5rem 1.2rem;
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            border-radius: 20px;
+            color: #e74c3c;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            border: none;
+        }
+
+        .logout-btn:hover {
+            background: rgba(231, 76, 60, 0.3);
+        }
+
+        .dashboard-container {
+            margin-top: 100px;
+            padding: 2rem 5%;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .welcome-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .welcome-section p {
+            color: #aaa;
+            font-size: 1.1rem;
         }
 
         .role-cards {
-          grid-template-columns: 1fr;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
         }
-      }
+
+        .role-card {
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.8), rgba(30, 30, 30, 0.6));
+            border-radius: 20px;
+            padding: 2.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .role-card:hover {
+            transform: translateY(-5px);
+            border-color: #27ae60;
+            box-shadow: 0 10px 30px rgba(39, 174, 96, 0.2);
+        }
+
+        .role-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .role-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #27ae60;
+        }
+
+        .role-card p {
+            color: #ccc;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #27ae60, #229954);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(20, 20, 20, 0.6);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                display: none;
+            }
+
+            .role-cards {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
-  </head>
-  <body>
+</head>
+<body>
     <header>
-      <div class="header-content">
-        <div class="logo-section">
-          <div class="logo">🌍</div>
-          <div class="brand">
-            <h1>Terra-Nova</h1>
-          </div>
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo">🌍</div>
+                <div class="brand">
+                    <h1>Terra-Nova</h1>
+                </div>
+            </div>
+            <nav id="mainNav">
+                <!-- Navigation will be dynamically populated -->
+            </nav>
+            <div class="user-menu" id="userMenu" style="display: none;">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <span id="userName">User</span>
+                </div>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
         </div>
-        <nav id="mainNav">
-          <!-- Navigation will be dynamically populated -->
-        </nav>
-        <div class="user-menu" id="userMenu" style="display: none">
-          <div class="user-info">
-            <div class="user-avatar" id="userAvatar">U</div>
-            <span id="userName">User</span>
-          </div>
-          <button class="logout-btn" onclick="logout()">Logout</button>
-        </div>
-      </div>
     </header>
 
     <div class="dashboard-container">
-      <div class="welcome-section">
-        <h2 id="welcomeMessage">Welcome to Terra-Nova</h2>
-        <p id="roleDescription">Access your personalized tools and insights</p>
-      </div>
+        <div class="welcome-section">
+            <h2 id="welcomeMessage">Welcome to Terra-Nova</h2>
+            <p id="roleDescription">Access your personalized tools and insights</p>
+        </div>
 
-      <div class="role-cards" id="roleCards">
-        <!-- Cards will be populated based on user role -->
-      </div>
+        <div class="role-cards" id="roleCards">
+            <!-- Cards will be populated based on user role -->
+        </div>
 
-      <div class="stats-grid" id="statsSection">
-        <!-- Stats will be populated based on user role -->
-      </div>
+        <div class="stats-grid" id="statsSection">
+            <!-- Stats will be populated based on user role -->
+        </div>
     </div>
 
     <script>
-      function checkAuth() {
-        const currentUser = localStorage.getItem("terranovaCurrentUser");
-        if (!currentUser) {
-          window.location.href = "login.html?redirect=dashboard";
-          return null;
+        function checkAuth() {
+            const currentUser = localStorage.getItem('terranovaCurrentUser');
+            if (!currentUser) {
+                window.location.href = 'login.html?redirect=dashboard';
+                return null;
+            }
+            
+            const user = JSON.parse(currentUser);
+            updateNavigation(user);
+            updateDashboard(user);
+            return user;
         }
 
-        const user = JSON.parse(currentUser);
-        updateNavigation(user);
-        updateDashboard(user);
-        return user;
-      }
+        function updateNavigation(user) {
+            document.getElementById('userMenu').style.display = 'flex';
+            document.getElementById('userName').textContent = user.name;
+            document.getElementById('userAvatar').textContent = user.name.charAt(0).toUpperCase();
 
-      function updateNavigation(user) {
-        document.getElementById("userMenu").style.display = "flex";
-        document.getElementById("userName").textContent = user.name;
-        document.getElementById("userAvatar").textContent = user.name
-          .charAt(0)
-          .toUpperCase();
-
-        let navLinks = `
+            let navLinks = `
                 <a href="home_page.html">Home</a>
                 <a href="dashboard.html">Dashboard</a>
             `;
 
-        if (user.role === "donor") {
-          navLinks += `
+            if (user.role === 'donor') {
+                navLinks += `
                     <a href="donation.html">Donate Food</a>
-                    <a href="#history">My Donations</a>
+                    <a href="mydonations.html">My Donations</a>
                 `;
-        } else if (user.role === "urban-planner") {
-          navLinks += `
-                    <a href="equity.html">Food Equity</a>
-                    <a href="environment.html">Waste-to-Resource</a>
-                    <a href="urba.html">Urban Analysis</a>
+            } else if (user.role === 'organization') {
+                navLinks += `
+                    <a href="organization.html">Available Food</a>
+                    <a href="#requests">My Requests</a>
                 `;
+            } else if (user.role === 'planner') {
+                navLinks += `
+                    <a href="planner.html">Get Fertilizer</a>
+                    <a href="#orders">My Orders</a>
+                `;
+            }
+
+            navLinks += `<a href="about.html">About</a>`;
+            document.getElementById('mainNav').innerHTML = navLinks;
         }
 
-        navLinks += `<a href="#about">About</a>`;
-        document.getElementById("mainNav").innerHTML = navLinks;
-      }
-
-      function updateDashboard(user) {
-        document.getElementById(
-          "welcomeMessage"
-        ).textContent = `Welcome, ${user.name}!`;
-
-        if (user.role === "donor") {
-          document.getElementById("roleDescription").textContent =
-            "Food Donor Dashboard - Make an impact with every donation";
-
-          document.getElementById("roleCards").innerHTML = `
+        function updateDashboard(user) {
+            document.getElementById('welcomeMessage').textContent = `Welcome, ${user.name}!`;
+            
+            if (user.role === 'donor') {
+                document.getElementById('roleDescription').textContent = 'Food Donor Dashboard - Make an impact with every donation';
+                
+                document.getElementById('roleCards').innerHTML = `
                     <div class="role-card">
                         <div class="role-icon">📸</div>
                         <h3>Donate Food</h3>
-                        <p>Upload food images for AI analysis and connect with recipients in need. Fresh food goes to people, at-risk items to composting.</p>
+                        <p>Upload food images for AI analysis and help reduce food waste. Edible food goes to organizations, while lower quality items become compost.</p>
                         <a href="donation.html" class="btn">Start Donating</a>
                     </div>
                     <div class="role-card">
                         <div class="role-icon">📊</div>
                         <h3>My Impact</h3>
                         <p>Track your donations, view environmental impact, and see how your contributions are helping the community.</p>
-                        <a href="#impact" class="btn">View Impact</a>
+                        <a href="mydonations.html" class="btn">View My Donations</a>
                     </div>
                 `;
 
-          document.getElementById("statsSection").innerHTML = `
+                // Load donor stats
+                const userDonations = JSON.parse(localStorage.getItem(`terranovaDonations_${user.email}`) || '[]');
+                const totalDonations = userDonations.length;
+                const edibleDonations = userDonations.filter(d => d.isEdible).length;
+                const compostDonations = userDonations.filter(d => !d.isEdible).length;
+                const estimatedImpact = userDonations.reduce((sum, d) => sum + (d.isEdible ? Math.floor(d.images * 2.5) : Math.floor(d.images * 1.5)), 0);
+
+                document.getElementById('statsSection').innerHTML = `
                     <div class="stat-card">
-                        <div class="stat-number">12</div>
+                        <div class="stat-number">${totalDonations}</div>
                         <div class="stat-label">Total Donations</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-number">85%</div>
-                        <div class="stat-label">Fresh Items</div>
+                        <div class="stat-number">${edibleDonations}</div>
+                        <div class="stat-label">Edible Items</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-number">45kg</div>
-                        <div class="stat-label">CO₂ Reduced</div>
+                        <div class="stat-number">${compostDonations}</div>
+                        <div class="stat-label">Compost Items</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-number">3</div>
-                        <div class="stat-label">Active Requests</div>
+                        <div class="stat-number">${estimatedImpact}</div>
+                        <div class="stat-label">Total Impact</div>
                     </div>
                 `;
-        } else if (user.role === "urban-planner") {
-          document.getElementById("roleDescription").textContent =
-            "Urban Planner Dashboard - Data-driven insights for sustainable cities";
 
-          document.getElementById("roleCards").innerHTML = `
+            } else if (user.role === 'organization') {
+                document.getElementById('roleDescription').textContent = 'Organization Dashboard - Access food for your community';
+                
+                document.getElementById('roleCards').innerHTML = `
                     <div class="role-card">
-                        <div class="role-icon">🏙️</div>
-                        <h3>Food Equity Analysis</h3>
-                        <p>Analyze food distribution patterns, identify underserved areas, and optimize resource allocation using NASA SEDAC data.</p>
-                        <a href="equity.html" class="btn">Explore Equity</a>
+                        <div class="role-icon">🏢</div>
+                        <h3>Available Food</h3>
+                        <p>Browse available food donations from our community. Request items that match your needs and coordinate pickups.</p>
+                        <a href="organization.html" class="btn">Browse Food</a>
                     </div>
+                    <div class="role-card">
+                        <div class="role-icon">📋</div>
+                        <h3>My Requests</h3>
+                        <p>Track your food requests, view status updates, and manage your organization's food distribution.</p>
+                        <a href="organization.html" class="btn">View Requests</a>
+                    </div>
+                `;
+
+                // Load organization stats
+                const allRequests = JSON.parse(localStorage.getItem('terranovaFoodRequests') || '[]');
+                const myRequests = allRequests.filter(req => req.organizationEmail === user.email);
+                
+                document.getElementById('statsSection').innerHTML = `
+                    <div class="stat-card">
+                        <div class="stat-number">${myRequests.length}</div>
+                        <div class="stat-label">Total Requests</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${myRequests.filter(req => req.status === 'approved').length}</div>
+                        <div class="stat-label">Approved</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${myRequests.filter(req => req.status === 'pending').length}</div>
+                        <div class="stat-label">Pending</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${myRequests.length * 10}</div>
+                        <div class="stat-label">People Served</div>
+                    </div>
+                `;
+
+            } else if (user.role === 'planner') {
+                document.getElementById('roleDescription').textContent = 'Urban Planner Dashboard - Sustainable agriculture solutions';
+                
+                document.getElementById('roleCards').innerHTML = `
                     <div class="role-card">
                         <div class="role-icon">🌱</div>
-                        <h3>Land Use Planning</h3>
-                        <p>Identify optimal locations for composting facilities and urban farms using HLS/CSA RCM high-resolution imagery.</p>
-                        <a href="environment.html" class="btn">Analyze Land Use</a>
+                        <h3>Get Fertilizer</h3>
+                        <p>Get personalized fertilizer recommendations based on your soil type using NASA data. Purchase compost made from food waste.</p>
+                        <a href="planner.html" class="btn">Get Recommendations</a>
                     </div>
                     <div class="role-card">
-                        <div class="role-icon">📈</div>
-                        <h3>NDVI Monitoring</h3>
-                        <p>Track vegetation health and soil quality improvements across urban farm sites with time-series NDVI data.</p>
-                        <a href="urba.html" class="btn">View Monitoring</a>
+                        <div class="role-icon">📦</div>
+                        <h3>My Orders</h3>
+                        <p>Track your fertilizer orders, view delivery status, and manage your sustainable agriculture projects.</p>
+                        <a href="planner.html" class="btn">View Orders</a>
                     </div>
                 `;
 
-          document.getElementById("statsSection").innerHTML = `
+                // Load planner stats
+                const allOrders = JSON.parse(localStorage.getItem('terranovaFertilizerOrders') || '[]');
+                const myOrders = allOrders.filter(order => order.customerEmail === user.email);
+                
+                document.getElementById('statsSection').innerHTML = `
                     <div class="stat-card">
-                        <div class="stat-number">92.4%</div>
-                        <div class="stat-label">Waste Diverted</div>
+                        <div class="stat-number">${myOrders.length}</div>
+                        <div class="stat-label">Total Orders</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-number">847</div>
-                        <div class="stat-label">Tons CO₂ Prevented</div>
+                        <div class="stat-number">${myOrders.filter(order => order.status === 'delivered').length}</div>
+                        <div class="stat-label">Delivered</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-number">34</div>
-                        <div class="stat-label">Active Sites</div>
+                        <div class="stat-number">${myOrders.filter(order => order.status === 'ordered').length}</div>
+                        <div class="stat-label">In Progress</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-number">12</div>
-                        <div class="stat-label">Suitable Locations</div>
+                        <div class="stat-number">${myOrders.reduce((sum, order) => sum + parseInt(order.price.replace('$', '')), 0)}</div>
+                        <div class="stat-label">Total Spent</div>
                     </div>
                 `;
+            }
         }
-      }
 
-      function logout() {
-        if (confirm("Are you sure you want to logout?")) {
-          localStorage.removeItem("terranovaCurrentUser");
-          window.location.href = "home_page.html";
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('terranovaCurrentUser');
+                window.location.href = 'home_page.html';
+            }
         }
-      }
 
-      // Check authentication on page load
-      document.addEventListener("DOMContentLoaded", function () {
-        checkAuth();
-      });
+        // Check authentication on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+        });
     </script>
-  </body>
+</body>
 </html>

@@ -260,7 +260,7 @@
 
       .roles-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
         gap: 3rem;
         margin-top: 3rem;
       }
@@ -634,12 +634,23 @@
           </div>
           <h3>Food Donors</h3>
           <p>
-            Upload food images and let our AI check quality instantly. Fresh
-            food connects with recipients, while at-risk items are redirected to
-            composting systems. Make every meal count and reduce waste in your
-            community.
+            Upload food images and let our AI check quality instantly. Fresh food (>90%) connects with organizations, while lower quality items are redirected to composting systems.
           </p>
           <a href="donation.html" class="btn btn-primary">Start Donating</a>
+        </div>
+
+        <!-- Organization Card -->
+        <div class="role-card">
+          <div class="role-icons">
+            <span>🏢</span>
+            <span>🤝</span>
+            <span>📦</span>
+          </div>
+          <h3>Organizations & Charities</h3>
+          <p>
+            Access available food donations, request items for your community, and coordinate pickups from Terra-Nova headquarters to distribute to those in need.
+          </p>
+          <a href="organization.html" class="btn btn-primary">Access Food</a>
         </div>
 
         <!-- Planner Card -->
@@ -649,14 +660,11 @@
             <span>📊</span>
             <span>🛰️</span>
           </div>
-          <h3>Urban Planners</h3>
+          <h3>Urban Planners & Farmers</h3>
           <p>
-            Access real-time dashboard powered by NASA satellite data including
-            HLS, SEDAC, and NDVI. Visualize food waste hotspots, plan optimal
-            composting sites, and monitor urban green spaces for sustainable
-            city development.
+            Get personalized fertilizer recommendations based on your soil type using NASA data. Purchase compost made from food waste to improve your land.
           </p>
-          <a href="dashboard.html" class="btn btn-primary">View Dashboard</a>
+          <a href="planner.html" class="btn btn-primary">Get Fertilizer</a>
         </div>
       </div>
     </section>
@@ -668,31 +676,25 @@
         <div class="step">
           <div class="step-number">1</div>
           <div class="step-icon">🤖</div>
-          <h4>AI Food Rescue</h4>
+          <h4>AI Food Analysis</h4>
           <p>
-            Our advanced AI analyzes food images and classifies them as Fresh,
-            At-Risk, or Spoiled, ensuring safe and efficient food
-            redistribution.
+            Donors upload food images. Our AI analyzes freshness and classifies items as edible (>90%) or for composting.
           </p>
         </div>
         <div class="step">
           <div class="step-number">2</div>
-          <div class="step-icon">♻️</div>
-          <h4>Waste-to-Resource</h4>
+          <div class="step-icon">🏢</div>
+          <h4>Organization Access</h4>
           <p>
-            Spoiled food is automatically routed to composting facilities or
-            urban gardens, creating nutrient-rich soil for sustainable
-            agriculture.
+            Charities see available food donations, request items, and pick them up from Terra-Nova centers for distribution.
           </p>
         </div>
         <div class="step">
           <div class="step-number">3</div>
-          <div class="step-icon">📈</div>
-          <h4>Urban Planning Dashboard</h4>
+          <div class="step-icon">🌱</div>
+          <h4>Compost & Fertilizer</h4>
           <p>
-            Planners leverage NASA Earth observation data to make informed
-            decisions about food systems, green infrastructure, and resource
-            allocation.
+            Lower quality food becomes compost. Planners get personalized fertilizer recommendations based on NASA soil data.
           </p>
         </div>
       </div>
@@ -706,33 +708,34 @@
           <div class="value-icon">🌱</div>
           <h4>Communities</h4>
           <p>
-            Access to safe, nutritious food and expanded green spaces. Reduced
-            hunger and improved quality of life through data-driven resource
-            distribution.
+            Access to safe, nutritious food through local organizations. Reduced hunger and improved quality of life.
           </p>
         </div>
         <div class="value-item">
           <div class="value-icon">💼</div>
           <h4>Donors</h4>
           <p>
-            Minimize waste, unlock tax benefits, and enhance public image.
-            Transform surplus food into positive social impact with full
-            transparency.
+            Minimize waste, support your community, and contribute to sustainable food systems with full transparency.
+          </p>
+        </div>
+        <div class="value-item">
+          <div class="value-icon">🏢</div>
+          <h4>Organizations</h4>
+          <p>
+            Access reliable food sources, serve more people, and build stronger community connections.
           </p>
         </div>
         <div class="value-item">
           <div class="value-icon">🏙️</div>
-          <h4>Planners</h4>
+          <h4>Planners & Farmers</h4>
           <p>
-            Data-driven insights for sustainable urban growth. Optimize resource
-            allocation, reduce environmental impact, and build resilient food
-            systems.
+            Data-driven insights for sustainable agriculture. Access affordable, effective fertilizers tailored to your soil.
           </p>
         </div>
       </div>
     </section>
 
-    <!-- NASA Data Integration -->
+    <!-- NASA Data Section -->
     <section class="nasa-data">
       <h2 class="section-title">Powered by NASA Earth Observation</h2>
       <div class="map-container">
@@ -741,8 +744,7 @@
             🛰️ Real-Time Data Visualization
           </h3>
           <p style="color: #aaa; max-width: 600px; text-align: center">
-            Interactive map showing food surplus hotspots, composting zones, and
-            food insecurity areas across your city.
+            Interactive map showing food surplus hotspots, organization locations, and soil analysis data across your region.
           </p>
         </div>
         <div class="map-legend">
@@ -752,11 +754,11 @@
           </div>
           <div class="legend-item">
             <div class="legend-color" style="background: #27ae60"></div>
-            <span>Composting Zones</span>
+            <span>Organization Centers</span>
           </div>
           <div class="legend-item">
             <div class="legend-color" style="background: #f39c12"></div>
-            <span>Food Insecurity Areas</span>
+            <span>Soil Analysis Zones</span>
           </div>
         </div>
       </div>
@@ -779,8 +781,7 @@
         <div class="footer-section">
           <h4>Terra-Nova</h4>
           <p style="color: #888">
-            Building sustainable food systems through innovation and
-            collaboration.
+            Building sustainable food systems through innovation and collaboration.
           </p>
           <div class="social-icons">
             <div class="social-icon">📘</div>
@@ -829,11 +830,11 @@
           `;
           document.getElementById('ctaButtons').innerHTML = `
             <a href="login.html?redirect=donation" class="btn btn-primary">Donate Food</a>
-            <a href="login.html?redirect=dashboard" class="btn btn-secondary">Planner Dashboard</a>
+            <a href="login.html?redirect=organization" class="btn btn-secondary">Organization Access</a>
           `;
           document.getElementById('footerCtaButtons').innerHTML = `
             <a href="login.html?redirect=donation" class="btn btn-primary">Donate Now</a>
-            <a href="login.html?redirect=dashboard" class="btn btn-secondary">Explore Dashboard</a>
+            <a href="login.html?redirect=organization" class="btn btn-secondary">Organization Portal</a>
           `;
           return null;
         }
@@ -858,11 +859,15 @@
             <a href="donation.html">Donate Food</a>
             <a href="dashboard.html">My Donations</a>
           `;
-        } else if (user.role === 'urban-planner') {
+        } else if (user.role === 'organization') {
           navLinks += `
-            <a href="dashboard.html">Dashboard</a>
-            <a href="equity.html">Food Equity</a>
-            <a href="environment.html">Waste-to-Resource</a>
+            <a href="organization.html">Available Food</a>
+            <a href="dashboard.html">My Requests</a>
+          `;
+        } else if (user.role === 'planner') {
+          navLinks += `
+            <a href="planner.html">Get Fertilizer</a>
+            <a href="dashboard.html">My Orders</a>
           `;
         }
 
@@ -879,14 +884,23 @@
             <a href="donation.html" class="btn btn-primary">Donate Now</a>
             <a href="dashboard.html" class="btn btn-secondary">View My Impact</a>
           `;
-        } else {
+        } else if (user.role === 'organization') {
           document.getElementById('ctaButtons').innerHTML = `
-            <a href="dashboard.html" class="btn btn-primary">Access Dashboard</a>
-            <a href="environment.html" class="btn btn-secondary">Land Use Analysis</a>
+            <a href="organization.html" class="btn btn-primary">Browse Available Food</a>
+            <a href="dashboard.html" class="btn btn-secondary">My Requests</a>
           `;
           document.getElementById('footerCtaButtons').innerHTML = `
-            <a href="dashboard.html" class="btn btn-primary">Access Dashboard</a>
-            <a href="environment.html" class="btn btn-secondary">Land Use Analysis</a>
+            <a href="organization.html" class="btn btn-primary">Browse Food</a>
+            <a href="dashboard.html" class="btn btn-secondary">My Requests</a>
+          `;
+        } else if (user.role === 'planner') {
+          document.getElementById('ctaButtons').innerHTML = `
+            <a href="planner.html" class="btn btn-primary">Get Fertilizer</a>
+            <a href="dashboard.html" class="btn btn-secondary">My Orders</a>
+          `;
+          document.getElementById('footerCtaButtons').innerHTML = `
+            <a href="planner.html" class="btn btn-primary">Get Fertilizer</a>
+            <a href="dashboard.html" class="btn btn-secondary">My Orders</a>
           `;
         }
       }

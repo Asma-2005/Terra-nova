@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fertilizer Recommendations - Terra-Nova</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .brand h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #27ae60;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            padding: 0.5rem 1.2rem;
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            border-radius: 20px;
+            color: #e74c3c;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            border: none;
+        }
+
+        .logout-btn:hover {
+            background: rgba(231, 76, 60, 0.3);
+        }
+
+        /* Main Container */
+        .main-container {
+            margin-top: 100px;
+            padding: 3rem 5%;
+            max-width: 1600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            color: #aaa;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Soil Analysis Section */
+        .analysis-section {
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.8), rgba(30, 30, 30, 0.6));
+            border-radius: 20px;
+            padding: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: #27ae60;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .location-section {
+            background: rgba(10, 10, 10, 0.5);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .location-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .location-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .location-label {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .location-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #27ae60;
+        }
+
+        .analyze-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #27ae60, #229954);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: block;
+            margin: 2rem auto 0;
+        }
+
+        .analyze-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4);
+        }
+
+        /* Fertilizer Recommendations */
+        .recommendations-section {
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.8), rgba(30, 30, 30, 0.6));
+            border-radius: 20px;
+            padding: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 3rem;
+        }
+
+        .fertilizer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .fertilizer-card {
+            background: rgba(10, 10, 10, 0.5);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+
+        .fertilizer-card:hover {
+            border-color: #27ae60;
+            transform: translateY(-5px);
+        }
+
+        .fertilizer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .fertilizer-name {
+            font-size: 1.3rem;
+            color: #27ae60;
+            font-weight: 600;
+        }
+
+        .fertilizer-match {
+            background: rgba(39, 174, 96, 0.2);
+            color: #27ae60;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .fertilizer-details {
+            color: #ccc;
+            margin-bottom: 1.5rem;
+        }
+
+        .fertilizer-detail {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .fertilizer-detail-label {
+            color: #888;
+        }
+
+        .purchase-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .purchase-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4);
+        }
+
+        /* Orders Section */
+        .orders-section {
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.8), rgba(30, 30, 30, 0.6));
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .orders-list {
+            display: grid;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .order-item {
+            background: rgba(10, 10, 10, 0.5);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border-left: 4px solid #f39c12;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .order-product {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .order-status {
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-ordered {
+            background: rgba(243, 156, 18, 0.2);
+            color: #f39c12;
+        }
+
+        .status-shipped {
+            background: rgba(41, 128, 185, 0.2);
+            color: #2980b9;
+        }
+
+        .status-delivered {
+            background: rgba(39, 174, 96, 0.2);
+            color: #27ae60;
+        }
+
+        .order-details {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                display: none;
+            }
+
+            .page-header h2 {
+                font-size: 2rem;
+            }
+
+            .fertilizer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .location-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo">🌍</div>
+                <div class="brand">
+                    <h1>Terra-Nova</h1>
+                </div>
+            </div>
+            <nav id="mainNav">
+                <!-- Navigation will be dynamically populated -->
+            </nav>
+            <div class="user-menu" id="userMenu" style="display: none;">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">P</div>
+                    <span id="userName">Planner</span>
+                </div>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h2>Personalized Fertilizer Recommendations</h2>
+            <p>Get fertilizer recommendations based on your soil type using NASA data and purchase compost made from food waste.</p>
+        </div>
+
+        <!-- Soil Analysis Section -->
+        <div class="analysis-section">
+            <h3 class="section-title">🛰️ Soil Analysis</h3>
+            <div class="location-section">
+                <h4>Your Location Analysis</h4>
+                <div class="location-info" id="locationInfo">
+                    <!-- Location data will be populated here -->
+                </div>
+                <button class="analyze-btn" onclick="analyzeSoil()">Analyze My Soil</button>
+            </div>
+        </div>
+
+        <!-- Fertilizer Recommendations -->
+        <div class="recommendations-section" id="recommendationsSection" style="display: none;">
+            <h3 class="section-title">🌱 Recommended Fertilizers</h3>
+            <div class="fertilizer-grid" id="fertilizerGrid">
+                <!-- Fertilizer recommendations will be populated here -->
+            </div>
+        </div>
+
+        <!-- My Orders Section -->
+        <div class="orders-section">
+            <h3 class="section-title">📦 My Orders</h3>
+            <div class="orders-list" id="ordersList">
+                <!-- Orders will be dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Authentication check for planner page
+        function checkAuth() {
+            const currentUser = localStorage.getItem('terranovaCurrentUser');
+            if (!currentUser) {
+                window.location.href = 'login.html?redirect=planner';
+                return null;
+            }
+            
+            const user = JSON.parse(currentUser);
+            
+            // Check if user has planner role
+            if (user.role !== 'planner') {
+                alert('This page is for urban planners and farmers only.');
+                window.location.href = 'dashboard.html';
+                return null;
+            }
+            
+            updateNavigation(user);
+            loadLocationData(user);
+            loadMyOrders();
+            return user;
+        }
+
+        function updateNavigation(user) {
+            document.getElementById('userMenu').style.display = 'flex';
+            document.getElementById('userName').textContent = user.name;
+            document.getElementById('userAvatar').textContent = user.name.charAt(0).toUpperCase();
+
+            const navLinks = `
+                <a href="home_page.html">Home</a>
+                <a href="planner.html">Get Fertilizer</a>
+                <a href="dashboard.html">My Dashboard</a>
+                <a href="#about">About</a>
+            `;
+            document.getElementById('mainNav').innerHTML = navLinks;
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('terranovaCurrentUser');
+                window.location.href = 'home_page.html';
+            }
+        }
+
+        // Load location data and display
+        function loadLocationData(user) {
+            const locationInfo = document.getElementById('locationInfo');
+            
+            // Simulate getting location data (in real app, this would use GPS and NASA APIs)
+            const locationData = {
+                city: user.location || 'Your City',
+                soilType: 'Clay Loam',
+                phLevel: '6.8',
+                nitrogen: 'Medium',
+                phosphorus: 'Low',
+                potassium: 'High'
+            };
+
+            locationInfo.innerHTML = `
+                <div class="location-item">
+                    <div class="location-label">Location</div>
+                    <div class="location-value">${locationData.city}</div>
+                </div>
+                <div class="location-item">
+                    <div class="location-label">Soil Type</div>
+                    <div class="location-value">${locationData.soilType}</div>
+                </div>
+                <div class="location-item">
+                    <div class="location-label">pH Level</div>
+                    <div class="location-value">${locationData.phLevel}</div>
+                </div>
+                <div class="location-item">
+                    <div class="location-label">Nitrogen</div>
+                    <div class="location-value">${locationData.nitrogen}</div>
+                </div>
+                <div class="location-item">
+                    <div class="location-label">Phosphorus</div>
+                    <div class="location-value">${locationData.phosphorus}</div>
+                </div>
+                <div class="location-item">
+                    <div class="location-label">Potassium</div>
+                    <div class="location-value">${locationData.potassium}</div>
+                </div>
+            `;
+        }
+
+        // Analyze soil and show recommendations
+        function analyzeSoil() {
+            const user = JSON.parse(localStorage.getItem('terranovaCurrentUser'));
+            
+            // Show loading state
+            const analyzeBtn = document.querySelector('.analyze-btn');
+            analyzeBtn.textContent = '🔄 Analyzing...';
+            analyzeBtn.disabled = true;
+
+            // Simulate API call to NASA data and analysis
+            setTimeout(() => {
+                // Generate fertilizer recommendations based on soil type
+                const recommendations = generateFertilizerRecommendations();
+                
+                // Display recommendations
+                displayFertilizerRecommendations(recommendations);
+                
+                // Reset button
+                analyzeBtn.textContent = '✓ Analysis Complete';
+                analyzeBtn.style.background = 'linear-gradient(135deg, #27ae60, #229954)';
+                
+                // Show recommendations section
+                document.getElementById('recommendationsSection').style.display = 'block';
+            }, 2000);
+        }
+
+        // Generate fertilizer recommendations based on soil analysis
+        function generateFertilizerRecommendations() {
+            return [
+                {
+                    id: 'fert_1',
+                    name: 'Organic Compost Blend',
+                    match: '95%',
+                    description: 'Perfect for clay loam soil with low phosphorus levels',
+                    npk: '3-2-2',
+                    price: '$45',
+                    quantity: '25kg bag',
+                    benefits: ['Improves soil structure', 'Increases water retention', 'Rich in microorganisms']
+                },
+                {
+                    id: 'fert_2',
+                    name: 'Phosphorus Boost Mix',
+                    match: '88%',
+                    description: 'Specifically formulated to address phosphorus deficiency',
+                    npk: '2-8-4',
+                    price: '$38',
+                    quantity: '20kg bag',
+                    benefits: ['Rapid phosphorus absorption', 'Promotes root development', 'Enhanced flowering']
+                },
+                {
+                    id: 'fert_3',
+                    name: 'Balanced Growth Formula',
+                    match: '82%',
+                    description: 'Well-rounded nutrition for overall plant health',
+                    npk: '5-5-5',
+                    price: '$42',
+                    quantity: '22kg bag',
+                    benefits: ['Balanced nutrient release', 'Suitable for most crops', 'Long-lasting effects']
+                }
+            ];
+        }
+
+        // Display fertilizer recommendations
+        function displayFertilizerRecommendations(recommendations) {
+            const fertilizerGrid = document.getElementById('fertilizerGrid');
+            
+            fertilizerGrid.innerHTML = recommendations.map(fert => `
+                <div class="fertilizer-card">
+                    <div class="fertilizer-header">
+                        <div class="fertilizer-name">${fert.name}</div>
+                        <div class="fertilizer-match">${fert.match} Match</div>
+                    </div>
+                    <div class="fertilizer-details">
+                        <p style="margin-bottom: 1rem; color: #aaa;">${fert.description}</p>
+                        <div class="fertilizer-detail">
+                            <span class="fertilizer-detail-label">NPK Ratio:</span>
+                            <span>${fert.npk}</span>
+                        </div>
+                        <div class="fertilizer-detail">
+                            <span class="fertilizer-detail-label">Price:</span>
+                            <span>${fert.price}</span>
+                        </div>
+                        <div class="fertilizer-detail">
+                            <span class="fertilizer-detail-label">Quantity:</span>
+                            <span>${fert.quantity}</span>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <div style="color: #888; font-size: 0.9rem; margin-bottom: 0.5rem;">Benefits:</div>
+                        ${fert.benefits.map(benefit => `<div style="color: #27ae60; font-size: 0.9rem; margin-bottom: 0.3rem;">✓ ${benefit}</div>`).join('')}
+                    </div>
+                    <button class="purchase-btn" onclick="purchaseFertilizer('${fert.id}')">
+                        Purchase - ${fert.price}
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Purchase fertilizer
+        function purchaseFertilizer(fertilizerId) {
+            const recommendations = generateFertilizerRecommendations();
+            const fertilizer = recommendations.find(f => f.id === fertilizerId);
+            const currentUser = JSON.parse(localStorage.getItem('terranovaCurrentUser'));
+
+            if (!fertilizer) {
+                alert('Fertilizer not found.');
+                return;
+            }
+
+            // Create order
+            const order = {
+                id: 'order_' + Date.now(),
+                fertilizerId: fertilizerId,
+                fertilizerName: fertilizer.name,
+                price: fertilizer.price,
+                quantity: fertilizer.quantity,
+                customerName: currentUser.name,
+                customerEmail: currentUser.email,
+                orderDate: new Date().toISOString(),
+                status: 'ordered',
+                estimatedDelivery: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() // 7 days from now
+            };
+
+            // Save order
+            const allOrders = JSON.parse(localStorage.getItem('terranovaFertilizerOrders') || '[]');
+            allOrders.push(order);
+            localStorage.setItem('terranovaFertilizerOrders', JSON.stringify(allOrders));
+
+            alert(`Order placed successfully! ${fertilizer.name} will be delivered within 7 days.`);
+            
+            // Reload orders
+            loadMyOrders();
+        }
+
+        // Load user's orders
+        function loadMyOrders() {
+            const currentUser = JSON.parse(localStorage.getItem('terranovaCurrentUser'));
+            const allOrders = JSON.parse(localStorage.getItem('terranovaFertilizerOrders') || '[]');
+            const myOrders = allOrders.filter(order => order.customerEmail === currentUser.email);
+            
+            const ordersList = document.getElementById('ordersList');
+            
+            if (myOrders.length === 0) {
+                ordersList.innerHTML = `
+                    <div style="text-align: center; padding: 2rem; color: #888;">
+                        <p>You haven't placed any orders yet.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            ordersList.innerHTML = myOrders.map(order => `
+                <div class="order-item">
+                    <div class="order-header">
+                        <div class="order-product">${order.fertilizerName}</div>
+                        <div class="order-status status-${order.status}">${order.status.charAt(0).toUpperCase() + order.status.slice(1)}</div>
+                    </div>
+                    <div class="order-details">
+                        <div>Price: ${order.price}</div>
+                        <div>Quantity: ${order.quantity}</div>
+                        <div>Ordered: ${new Date(order.orderDate).toLocaleDateString()}</div>
+                        <div>Estimated Delivery: ${new Date(order.estimatedDelivery).toLocaleDateString()}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Check authentication on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+        });
+    </script>
+</body>
+</html>

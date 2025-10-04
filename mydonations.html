@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Donations - Terra-Nova</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .brand h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #27ae60;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            padding: 0.5rem 1.2rem;
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            border-radius: 20px;
+            color: #e74c3c;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            border: none;
+        }
+
+        .logout-btn:hover {
+            background: rgba(231, 76, 60, 0.3);
+        }
+
+        /* Main Container */
+        .main-container {
+            margin-top: 100px;
+            padding: 3rem 5%;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            color: #aaa;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background: linear-gradient(135deg, rgba(39, 174, 96, 0.1), rgba(41, 128, 185, 0.1));
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            border: 1px solid rgba(39, 174, 96, 0.3);
+            margin-bottom: 3rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            padding: 1.5rem;
+            background: rgba(10, 10, 10, 0.5);
+            border-radius: 15px;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #27ae60, #2980b9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        /* Donations Section */
+        .donations-section {
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.8), rgba(30, 30, 30, 0.6));
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: #27ae60;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .donations-list {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .donation-card {
+            background: rgba(10, 10, 10, 0.5);
+            border-radius: 15px;
+            padding: 2rem;
+            border-left: 4px solid #27ae60;
+            transition: all 0.3s;
+        }
+
+        .donation-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.2);
+        }
+
+        .donation-card.compost {
+            border-left-color: #f39c12;
+        }
+
+        .donation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .donation-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #27ae60;
+        }
+
+        .donation-status {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-available {
+            background: rgba(39, 174, 96, 0.2);
+            color: #27ae60;
+        }
+
+        .status-requested {
+            background: rgba(243, 156, 18, 0.2);
+            color: #f39c12;
+        }
+
+        .status-compost {
+            background: rgba(41, 128, 185, 0.2);
+            color: #2980b9;
+        }
+
+        .donation-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-label {
+            color: #888;
+            font-size: 0.8rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .detail-value {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .donation-impact {
+            background: rgba(41, 128, 185, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .impact-title {
+            color: #2980b9;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #888;
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #27ae60, #229954);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                display: none;
+            }
+
+            .page-header h2 {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .donation-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo">🌍</div>
+                <div class="brand">
+                    <h1>Terra-Nova</h1>
+                </div>
+            </div>
+            <nav id="mainNav">
+                <!-- Navigation will be dynamically populated -->
+            </nav>
+            <div class="user-menu" id="userMenu" style="display: none;">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <span id="userName">User</span>
+                </div>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h2>My Food Donations</h2>
+            <p>Track your donations, see their impact, and monitor how your contributions are helping the community.</p>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="stats-section">
+            <h3>Your Donation Impact</h3>
+            <div class="stats-grid" id="statsGrid">
+                <!-- Stats will be dynamically populated -->
+            </div>
+        </div>
+
+        <!-- Donations Section -->
+        <div class="donations-section">
+            <h3 class="section-title">📦 My Donation History</h3>
+            <div class="donations-list" id="donationsList">
+                <!-- Donations will be dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Authentication check
+        function checkAuth() {
+            const currentUser = localStorage.getItem('terranovaCurrentUser');
+            if (!currentUser) {
+                window.location.href = 'login.html';
+                return null;
+            }
+            
+            const user = JSON.parse(currentUser);
+            
+            // Check if user has donor role
+            if (user.role !== 'donor') {
+                alert('This page is for food donors only.');
+                window.location.href = 'dashboard.html';
+                return null;
+            }
+            
+            updateNavigation(user);
+            loadDonations(user);
+            return user;
+        }
+
+        function updateNavigation(user) {
+            document.getElementById('userMenu').style.display = 'flex';
+            document.getElementById('userName').textContent = user.name;
+            document.getElementById('userAvatar').textContent = user.name.charAt(0).toUpperCase();
+
+            const navLinks = `
+                <a href="home_page.html">Home</a>
+                <a href="donation.html">Donate</a>
+                <a href="mydonations.html">My Donations</a>
+                <a href="dashboard.html">Dashboard</a>
+            `;
+            document.getElementById('mainNav').innerHTML = navLinks;
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('terranovaCurrentUser');
+                window.location.href = 'home_page.html';
+            }
+        }
+
+        // Load user's donations
+        function loadDonations(user) {
+            const userDonations = JSON.parse(localStorage.getItem(`terranovaDonations_${user.email}`) || '[]');
+            const donationsList = document.getElementById('donationsList');
+            
+            if (userDonations.length === 0) {
+                donationsList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🍽️</div>
+                        <h3>No Donations Yet</h3>
+                        <p>You haven't made any food donations yet. Start making an impact today!</p>
+                        <a href="donation.html" class="btn">Make Your First Donation</a>
+                    </div>
+                `;
+                updateStats(userDonations);
+                return;
+            }
+
+            // Sort donations by date (newest first)
+            userDonations.sort((a, b) => new Date(b.submittedDate) - new Date(a.submittedDate));
+
+            donationsList.innerHTML = userDonations.map(donation => `
+                <div class="donation-card ${donation.isEdible ? '' : 'compost'}">
+                    <div class="donation-header">
+                        <div class="donation-title">${donation.foodType.charAt(0).toUpperCase() + donation.foodType.slice(1)}</div>
+                        <div class="donation-status status-${donation.isEdible ? 'available' : 'compost'}">
+                            ${donation.isEdible ? 'Available for Organizations' : 'Converted to Compost'}
+                        </div>
+                    </div>
+                    <div class="donation-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Quantity</span>
+                            <span class="detail-value">${donation.quantity}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Quality Score</span>
+                            <span class="detail-value">${donation.qualityScore}%</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Donated On</span>
+                            <span class="detail-value">${new Date(donation.submittedDate).toLocaleDateString()}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Location</span>
+                            <span class="detail-value">${donation.location}</span>
+                        </div>
+                    </div>
+                    ${donation.description ? `
+                        <div class="detail-item">
+                            <span class="detail-label">Description</span>
+                            <span class="detail-value">${donation.description}</span>
+                        </div>
+                    ` : ''}
+                    <div class="donation-impact">
+                        <div class="impact-title">Impact</div>
+                        <div>${getImpactMessage(donation)}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            updateStats(userDonations);
+        }
+
+        // Get impact message based on donation type
+        function getImpactMessage(donation) {
+            if (donation.isEdible) {
+                const peopleHelped = Math.floor(donation.images * 2.5);
+                return `This donation can help feed approximately ${peopleHelped} people through local organizations.`;
+            } else {
+                const compostImpact = Math.floor(donation.images * 1.5);
+                return `This food will create compost to help grow fresh produce for ${compostImpact} urban farm plots.`;
+            }
+        }
+
+        // Update statistics
+        function updateStats(donations) {
+            const totalDonations = donations.length;
+            const edibleDonations = donations.filter(d => d.isEdible).length;
+            const compostDonations = donations.filter(d => !d.isEdible).length;
+            
+            // Calculate estimated impact
+            const estimatedPeople = donations.filter(d => d.isEdible).reduce((sum, d) => sum + Math.floor(d.images * 2.5), 0);
+            const estimatedCompost = donations.filter(d => !d.isEdible).reduce((sum, d) => sum + Math.floor(d.images * 1.5), 0);
+
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-item">
+                    <div class="stat-number">${totalDonations}</div>
+                    <div class="stat-label">Total Donations</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">${edibleDonations}</div>
+                    <div class="stat-label">Edible Items</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">${compostDonations}</div>
+                    <div class="stat-label">Compost Items</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">${estimatedPeople + estimatedCompost}</div>
+                    <div class="stat-label">Total Impact</div>
+                </div>
+            `;
+        }
+
+        // Check authentication on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+        });
+    </script>
+</body>
+</html>

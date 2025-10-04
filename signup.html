@@ -312,12 +312,12 @@
 
             <form id="signupForm">
                 <div class="form-group">
-                    <label class="form-label">Full Name</label>
+                    <label class="form-label">Full Name / Organization Name</label>
                     <input 
                         type="text" 
                         class="form-input" 
                         id="fullName" 
-                        placeholder="Enter your full name"
+                        placeholder="Enter your name or organization name"
                         required
                     >
                     <div class="error-message" id="nameError">Name is required</div>
@@ -360,22 +360,40 @@
                 </div>
 
                 <div class="form-group">
+                    <label class="form-label">Location</label>
+                    <input 
+                        type="text" 
+                        class="form-input" 
+                        id="location" 
+                        placeholder="City, State"
+                        required
+                    >
+                    <div class="error-message" id="locationError">Location is required</div>
+                </div>
+
+                <div class="form-group">
                     <label class="form-label">I am a...</label>
                     <select class="form-select" id="userRole" required>
                         <option value="">Select your role</option>
                         <option value="donor">Food Donor</option>
-                        <option value="urban-planner">Urban Planner</option>
+                        <option value="organization">Organization/Charity</option>
+                        <option value="planner">Urban Planner/Farmer</option>
                     </select>
                     <div class="error-message" id="roleError">Please select a role</div>
                     
                     <div class="role-info" id="donorInfo">
                         <span class="role-icon">🍽️</span>
-                        <strong>Food Donor:</strong> Upload food items, get AI quality analysis, and connect with recipients in need.
+                        <strong>Food Donor:</strong> Upload food items, get AI quality analysis, and help reduce food waste.
+                    </div>
+                    
+                    <div class="role-info" id="organizationInfo">
+                        <span class="role-icon">🏢</span>
+                        <strong>Organization/Charity:</strong> Access available food donations and request items for your community.
                     </div>
                     
                     <div class="role-info" id="plannerInfo">
                         <span class="role-icon">🏙️</span>
-                        <strong>Urban Planner:</strong> Access data dashboards, NASA satellite insights, and strategic planning tools.
+                        <strong>Urban Planner/Farmer:</strong> Get personalized fertilizer recommendations based on NASA soil data.
                     </div>
                 </div>
 
@@ -403,16 +421,20 @@
         const signupForm = document.getElementById('signupForm');
         const userRole = document.getElementById('userRole');
         const donorInfo = document.getElementById('donorInfo');
+        const organizationInfo = document.getElementById('organizationInfo');
         const plannerInfo = document.getElementById('plannerInfo');
 
         // Show role information based on selection
         userRole.addEventListener('change', function() {
             donorInfo.classList.remove('show');
+            organizationInfo.classList.remove('show');
             plannerInfo.classList.remove('show');
 
             if (this.value === 'donor') {
                 donorInfo.classList.add('show');
-            } else if (this.value === 'urban-planner') {
+            } else if (this.value === 'organization') {
+                organizationInfo.classList.add('show');
+            } else if (this.value === 'planner') {
                 plannerInfo.classList.add('show');
             }
         });
@@ -425,6 +447,7 @@
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
+            const location = document.getElementById('location').value.trim();
             const role = userRole.value;
             const termsAgree = document.getElementById('termsAgree').checked;
 
@@ -459,6 +482,13 @@
                 document.getElementById('confirmPasswordError').classList.remove('show');
             }
 
+            if (location === '') {
+                document.getElementById('locationError').classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('locationError').classList.remove('show');
+            }
+
             if (role === '') {
                 document.getElementById('roleError').classList.add('show');
                 isValid = false;
@@ -488,6 +518,7 @@
                     name: fullName,
                     email: email,
                     password: password,
+                    location: location,
                     role: role,
                     createdAt: new Date().toISOString()
                 };
